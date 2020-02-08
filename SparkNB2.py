@@ -23,7 +23,7 @@ df.show()
 # 定义结巴切词方法
 def seg(text):
     return ''.join(jieba.cut(text, cut_all=True))
-
+ 
 
 seg_udf = udf(seg, StringType())
 
