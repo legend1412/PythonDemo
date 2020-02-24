@@ -8,6 +8,7 @@ r = '[’!"#$%&\'()*+,-.。，/:;<=>?@[\\]^_`{|}~]+'
 s1 = re.sub(r, '', s1)
 s2 = re.sub(r, '', s2)
 
+
 # # ##### 1 #####
 # # s1_seg = '/'.join([x for x in jieba.cut(s1, cut_all=True) if x != ''])
 # s1_seg = [x for x in jieba.cut(s1, cut_all=True) if x != '']
@@ -44,7 +45,7 @@ s2 = re.sub(r, '', s2)
 # with open('stop_word.txt', 'r', encoding='utf-8') as f:
 #     for word in f.readlines():
 #         stop_set.add(word.strip())
-        # print(stop_set)
+# print(stop_set)
 # s1_seg_new = [x for x in s1_seg if x not in stop_set]
 # print(s1_seg_new)
 # # 1)对字典中的词进行编码
@@ -105,11 +106,11 @@ def word_vec(s1, s2):
     s2_vec = [0] * len(word_encode_dict)
 
     for w, c in s1_wc.items():
-        if word_encode_dict.get(w)==None:
+        if word_encode_dict.get(w) == None:
             continue
         s1_vec[word_encode_dict[w]] = c
     for w, c in s2_wc.items():
-        if word_encode_dict.get(w)==None:
+        if word_encode_dict.get(w) == None:
             continue
         s2_vec[word_encode_dict[w]] = c
     return s1_vec, s2_vec

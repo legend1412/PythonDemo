@@ -43,7 +43,7 @@ for filename in os.listdir(file_path):
             # 词不在字典中，将词编码
             if wordIDDict.get(word, -1) == -1:
                 wordIDDict[word] = len(wordIDDict)
-                outfile.write(str(wordIDDict[word]) + ' ')
+            outfile.write(str(wordIDDict[word]) + ' ')
     outfile.write('#' + filename + '\n')
 
 print(len(wordIDDict), 'unique words found!')

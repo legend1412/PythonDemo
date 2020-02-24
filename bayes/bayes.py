@@ -161,7 +161,6 @@ def evaluete(true_list, pred_list):
     print('Accuracy:', accuracy)
 
 
-
 if __name__ == '__main__':
     loaddata()
     computemodel()

@@ -2,16 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd0cc94d-e385-4fb4-a7a4-db81ad4f38c4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Administrator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bayes/bayes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bayes/data_convert.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nlp_txt/stop_word.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nlp_txt/tfidf_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nlp_txt/word_cnt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pythondemo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pythondemo.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bayes/bayes.py" beforeDir="false" afterPath="$PROJECT_DIR$/bayes/bayes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bayes/data_convert.py" beforeDir="false" afterPath="$PROJECT_DIR$/bayes/data_convert.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/mid_data/data.test" beforeDir="false" afterPath="$PROJECT_DIR$/data/mid_data/data.test" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/mid_data/data.train" beforeDir="false" afterPath="$PROJECT_DIR$/data/mid_data/data.train" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/rest_data/class_default.model" beforeDir="false" afterPath="$PROJECT_DIR$/data/rest_data/class_default.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/rest_data/class_feat.model" beforeDir="false" afterPath="$PROJECT_DIR$/data/rest_data/class_feat.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/rest_data/class_prob.model" beforeDir="false" afterPath="$PROJECT_DIR$/data/rest_data/class_prob.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/rest_data/word_dict.model" beforeDir="false" afterPath="$PROJECT_DIR$/data/rest_data/word_dict.model" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nlp_txt/word_cnt.py" beforeDir="false" afterPath="$PROJECT_DIR$/nlp_txt/word_cnt.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,8 +37,8 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.General" />
+    <property name="last_opened_file_path" value="D:/SVN/学就成在线课堂/xjc_web" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.appearance" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -57,7 +57,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.bayes">
+  <component name="RunManager" selected="Python.hive_tfidf_eval">
     <configuration name="bayes" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pythondemo" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -94,6 +94,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bayes/data_convert.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="hive_tfidf_eval" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pythondemo" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nlp_txt" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nlp_txt/hive_tfidf_eval.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -146,35 +168,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="word_cnt" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="pythondemo" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/nlp_txt" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/nlp_txt/word_cnt.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.hive_tfidf_eval" />
+        <item itemvalue="Python.tfidf_test" />
         <item itemvalue="Python.bayes" />
         <item itemvalue="Python.data_convert" />
         <item itemvalue="Python.test" />
-        <item itemvalue="Python.tfidf_test" />
-        <item itemvalue="Python.word_cnt" />
       </list>
     </recent_temporary>
   </component>
@@ -202,6 +202,11 @@
       <workItem from="1581227342286" duration="12837000" />
       <workItem from="1581322199045" duration="5781000" />
       <workItem from="1582205993885" duration="107000" />
+      <workItem from="1582295215430" duration="1282000" />
+      <workItem from="1582384252356" duration="620000" />
+      <workItem from="1582458677179" duration="618000" />
+      <workItem from="1582549605337" duration="545000" />
+      <workItem from="1582553241455" duration="1778000" />
     </task>
     <servers />
   </component>
@@ -225,10 +230,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PythonDemo$tfidf_test.coverage" NAME="tfidf_test Coverage Results" MODIFIED="1581172996183" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nlp_txt" />
+    <SUITE FILE_PATH="coverage/PythonDemo$tfidf_test.coverage" NAME="tfidf_test Coverage Results" MODIFIED="1582554967625" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nlp_txt" />
     <SUITE FILE_PATH="coverage/PythonDemo$test.coverage" NAME="test Coverage Results" MODIFIED="1581326874729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bayes" />
-    <SUITE FILE_PATH="coverage/PythonDemo$bayes.coverage" NAME="bayes Coverage Results" MODIFIED="1581327158446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bayes" />
+    <SUITE FILE_PATH="coverage/PythonDemo$bayes.coverage" NAME="bayes Coverage Results" MODIFIED="1582554954531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bayes" />
+    <SUITE FILE_PATH="coverage/PythonDemo$hive_tfidf_eval.coverage" NAME="hive_tfidf_eval Coverage Results" MODIFIED="1582554981690" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nlp_txt" />
     <SUITE FILE_PATH="coverage/PythonDemo$word_cnt.coverage" NAME="word_cnt Coverage Results" MODIFIED="1581167777883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/nlp_txt" />
-    <SUITE FILE_PATH="coverage/PythonDemo$data_convert.coverage" NAME="data_convert Coverage Results" MODIFIED="1581327018601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bayes" />
+    <SUITE FILE_PATH="coverage/PythonDemo$data_convert.coverage" NAME="data_convert Coverage Results" MODIFIED="1582554926975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/bayes" />
   </component>
 </project>
