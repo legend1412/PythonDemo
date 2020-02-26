@@ -9,7 +9,7 @@ import json
 #data_file = os.path.join(data_path,'orders.csv')
 
 writeFileName = "./flume_test.txt"
-#writeFileName="./flume_hive_text.txt"
+# writeFileName="./flume_hive_text.txt"
 cols=["order_id","user_id","eval_set","order_number","order_dow","hour","day"]
 
 df = pd.read_csv('../../usrdata/orders.csv')
