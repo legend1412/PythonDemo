@@ -73,18 +73,18 @@ s2 = re.sub(r, '', s2)
 # print('s1_vec:', s1_vec)
 # print('s2_vec:', s2_vec)
 
-def word_vec(s1, s2):
-    s1_seg = [x for x in jieba.cut(s1, cut_all=True) if x != '']
-    s2_seg = [x for x in jieba.cut(s2, cut_all=True) if x != '']
+def word_vec(s3, s4):
+    s1_seg = [x for x in jieba.cut(s3, cut_all=True) if x != '']
+    s2_seg = [x for x in jieba.cut(s4, cut_all=True) if x != '']
 
     s_set = set(s1_seg).union(set(s2_seg))  # 并集：set(s1_seg)|set(s2_seg) 交集：set(s1_seg)&set(s2_seg)
 
     def word_cnt(s_seg):
         s_dict = {}
-        for word in s_seg:
-            if s_dict.get(word) == None:
-                s_dict[word] = 0
-            s_dict[word] += 1
+        for word1 in s_seg:
+            if s_dict.get(word1) is None:
+                s_dict[word1] = 0
+            s_dict[word1] += 1
         return s_dict
 
     # 加载停用词表
@@ -102,18 +102,18 @@ def word_vec(s1, s2):
     s1_wc = word_cnt(s1_seg)
     s2_wc = word_cnt(s2_seg)
 
-    s1_vec = [0] * len(word_encode_dict)  # [0,0,0,0,0,0,0,0,0,0]
-    s2_vec = [0] * len(word_encode_dict)
+    s1_vec1 = [0] * len(word_encode_dict)  # [0,0,0,0,0,0,0,0,0,0]
+    s2_vec1 = [0] * len(word_encode_dict)
 
     for w, c in s1_wc.items():
-        if word_encode_dict.get(w) == None:
+        if word_encode_dict.get(w) is None:
             continue
-        s1_vec[word_encode_dict[w]] = c
+        s1_vec1[word_encode_dict[w]] = c
     for w, c in s2_wc.items():
-        if word_encode_dict.get(w) == None:
+        if word_encode_dict.get(w) is None:
             continue
-        s2_vec[word_encode_dict[w]] = c
-    return s1_vec, s2_vec
+        s2_vec1[word_encode_dict[w]] = c
+    return s1_vec1, s2_vec1
 
 
 s1_vec, s2_vec = word_vec(s1, s2)

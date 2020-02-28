@@ -43,5 +43,7 @@ input("dss")
 
 def add(element: int) -> int:
     print(element)
+    return 0
+
 
 add(1)

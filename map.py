@@ -1,4 +1,3 @@
-import sys
 import re
 
 p = re.compile(r'\w+')
