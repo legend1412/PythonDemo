@@ -1,14 +1,12 @@
 # -*- coding:utf-8 -*-
-import random
-import time
 
 readFileName = "/usr/usrdata/orders.csv"
 writeFileName = "./flume_kafka_test.txt"
 with open(writeFileName, 'a+') as wf:
     with open(readFileName, 'rb') as f:
-        for line in f.readline():
-            for word in line.split(" "):
-                ss = line.strip()
+        for line in f.readlines():
+            for word in str(line).split(" "):
+                ss = str(line).strip()
                 if len(ss) < 1:
                     continue
                 wf.write(ss + "\n")
