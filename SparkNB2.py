@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from pyspark.ml.base import Transformer
 from pyspark.ml.classification import NaiveBayes
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import Tokenizer, IDF, HashingTF, StringIndexer
@@ -13,8 +15,7 @@ importlib.reload(sys)
 # python3.6不再有下面的方法
 # sys.setdefaultencoding('utf8')
 # 创建sparksession
-spark = SparkSession.builder.appName(
-    "PySpark NB Test").enableHiveSupport().getOrCreate()
+spark = SparkSession.builder.appName("PySpark NB Test").enableHiveSupport().getOrCreate()
 # 读取hive数据
 df = spark.sql("select sentence,label from badou.new_noseg")
 df.show()
