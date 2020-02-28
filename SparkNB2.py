@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from pyspark.ml.base import Transformer
 from pyspark.ml.classification import NaiveBayes
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import Tokenizer, IDF, HashingTF, StringIndexer
