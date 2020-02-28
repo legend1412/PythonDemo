@@ -17,7 +17,7 @@ importlib.reload(sys)
 # 创建sparksession
 spark = SparkSession.builder.appName("PySpark NB Test").enableHiveSupport().getOrCreate()
 # 读取hive数据
-df = spark.sql("select sentence,label from badou.new_noseg")
+df = spark.sql("select sentence,label from badou.news_noseg")
 df.show()
 
 
