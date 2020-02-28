@@ -33,26 +33,26 @@ df_seg = df.withColumn('seg', seg_udf(df.sentence)).select('seg', 'label')
 df_seg.show()
 # 将分词做成ArrayType()
 tokenizer = Tokenizer(inputCol='seg', outputCol='words')
-assert isinstance(tokenizer,Transformer)
+assert isinstance(tokenizer, Transformer)
 df_seg_arr = tokenizer.transform(df_seg).select('words', 'label')
 df_seg_arr.show()
 
 # 切词后的文本特征处理
 tf = HashingTF(numFeatures=1 << 18, binary=False, inputCol='words', outputCol='rawfeatures')
-assert isinstance(tf,Transformer)
+assert isinstance(tf, Transformer)
 df_tf = tf.transform(df_seg_arr).select('rawfeatures', 'label')
 df_tf.show()
 
 idf = IDF(inputCol='rawfeatures', outputCol='features')
 idfModel = idf.fit(df_tf)
-assert isinstance(idfModel,Transformer)
+assert isinstance(idfModel, Transformer)
 df_tf_idf = idfModel.transform(df_tf)
 df_tf_idf.show()
 
 # label数据处理
 stringIndexer = StringIndexer(inputCol='label', outputCol='indexed', handleInvalid='error')
 indexer = stringIndexer.fit(df_tf_idf)
-assert isinstance(indexer,Transformer)
+assert isinstance(indexer, Transformer)
 df_tf_idf_lab = indexer.transform(df_tf_idf).select('features', 'indexed')
 
 df_tf_idf_lab.show()
@@ -68,7 +68,7 @@ nb = NaiveBayes(featuresCol='features', labelCol='indexed', predictionCol='predi
                 smoothing=1.0, modelType='multinomial')
 # 模型训练
 model = nb.fit(train)
-assert isinstance(model,Transformer)
+assert isinstance(model, Transformer)
 # 预测集训练
 predictions = model.transform(test)
 predictions.show()
