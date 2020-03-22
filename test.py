@@ -38,8 +38,16 @@ print(result2)
 
 origin = "12 13 14"
 res = re.match(r"(\d\d) (\d\d) (\d\d)", origin)
-input("dss")
+# input("dss")
 
+print("=========================")
+for i in range(10):
+    if i==-1:
+        print("进入")
+        for j in range(5):
+            print("j:"+str(j))
+    print("i:"+str(i))
+print("=========================")
 
 def add(element: int) -> int:
     print(element)
@@ -47,3 +55,4 @@ def add(element: int) -> int:
 
 
 add(1)
+
