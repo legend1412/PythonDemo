@@ -2,19 +2,20 @@ from cf.util import read_train_data
 
 
 # 1.获取用户和用户之间的相似度
-# 1.1 正常逻辑，用户相似度计算
-
+# 1.1 正常逻辑，用户相似度计算 jaccard distance =交集/并集
+# 复杂度 n^2*l^2 l<m
 def user_normal_simmilarity(train_data):
     # 相似度字典
     w = dict()
+
     for u in train_data.keys():
         if w.get(u, -1) == -1:
             w[u] = dict()
             for v in train_data.keys():
                 if u == v: continue
                 # 相似度计算，通过两个用户共同拥有的物品集合数量
-                w[u][v] = len(set(train_data[u]) & set(train_data[v]))  # jaccard distance
-                w[u][v] = 2 * w[u][v] / (len(train_data[u]) + len(train_data[v]))
+                w[u][v] = len(set(train_data[u]) & set(train_data[v]))  # l<m l^2 # jaccard distance
+                w[u][v] = w[u][v] / (len(set(train_data[u]) | set(train_data[v])))
     return w
     # print(w['196'])
     # 发现相似度为0的数据 '826':0.0 复杂度:O(n^2)
@@ -24,23 +25,27 @@ def user_normal_simmilarity(train_data):
 
 
 # 1.2 优化计算用户与用户之间的相似度 user->item => item->user
+# 复杂度 n*m+m*k^2 m>nl
 def user_sim(train_data):
-    # 建立item->user的倒排表
+    # 建立item->user的倒排表 n*m
     item_users = dict()
-    for u, items in train_data.items():  # items item,rating
-        for i in items.keys():
+    for u, items in train_data.items():  # n # items item,rating
+        for i in items.keys():  # m
             if item_users.get(i, -1) == -1:
                 item_users[i] = set()
             item_users[i].add(u)
 
     # 计算共同的items数量
     c = dict()
-    for i, users in item_users.items():
-        for u in users:
+
+    # 复杂度 m*k^2
+    for i, users in item_users.items():  # m
+        for u in users:  # k<n
             if c.get(u, -1) == -1:
                 c[u] = dict()
-            for v in users:
-                if u == v: continue
+            for v in users:  # k<n
+                if u == v:
+                    continue
                 if c[u].get(v, -1) == -1:
                     c[u][v] = 0
                 c[u][v] += 1
