@@ -30,3 +30,4 @@ for _, row in df.iterrows():
 
 with open(mid_train_data_path, 'w', encoding='utf-8') as f:
     f.write(str(train_data))
+
