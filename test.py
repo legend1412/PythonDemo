@@ -15,6 +15,7 @@
 #         print(word_list)
 
 import re
+import numpy as np
 
 word = 'granther?"1.'
 # p = re.compile(r'\w+')
@@ -42,17 +43,28 @@ res = re.match(r"(\d\d) (\d\d) (\d\d)", origin)
 
 print("=========================")
 for i in range(10):
-    if i==-1:
+    if i == -1:
         print("进入")
         for j in range(5):
-            print("j:"+str(j))
-    print("i:"+str(i))
+            print("j:" + str(j))
+    print("i:" + str(i))
 print("=========================")
+
 
 def add(element: int) -> int:
     print(element)
     return 0
 
 
-add(1)
+a = ['a', 'b', 'c']
+b = ['a', 'a', 'd']
+print(set(a))
+print(set(b))
+print(set(a) & set(b))
+print(len(set(a) & set(b)))
 
+c = np.array([3, 4, 5, 6, 7])
+d = [(x - c.mean()) / c.std() for x in c]
+print(d)
+
+add(1)
