@@ -85,6 +85,6 @@ if __name__ == '__main__':
     train_data1 = read_train_data()
     # w = user_normal_simmilarity(train_data1)
     c1 = user_sim(train_data1)
-    uid = '196'
+    uid = '13'
     b = recommend(train_data1, uid, c1)
     print(b)

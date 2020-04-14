@@ -7,7 +7,7 @@ user_id  item_id  rating  timestamp
 处理训练数据->dict{user_id:{item_id:rating},user_id1:{item_id2:rating}}
 """
 
-df = pd.read_csv('../data/u.data',
+df = pd.read_csv('../data/test.data',
                  sep='\t',
                  # nrows=10,
                  names=['user_id', 'item_id', 'rating', 'timestamp'])

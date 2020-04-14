@@ -1,4 +1,4 @@
-mid_train_data_path = '../data/mid_data/u_data.train'
+mid_train_data_path = '../data/mid_data/test_data.train'
 
 
 def read_train_data():
