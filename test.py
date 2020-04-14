@@ -68,3 +68,12 @@ d = [(x - c.mean()) / c.std() for x in c]
 print(d)
 
 add(1)
+
+
+def cosine_dis(x, y):
+    num = sum(map(float, x * y))
+    denom = np.linalg.norm(x) * np.linalg.norm(y)
+    return round(num / float(denom), 2)
+
+
+print(cosine_dis(np.array([5, 1, 2, 2]), np.array([1, 5, 5, 5])))
