@@ -74,5 +74,36 @@ while True:
     # print(ch_lst)
     # print(status_lst)
 
-    
-    break
+    # 做模型统计：count：分子部分，sum：分母部分
+    for i in range(len(ch_lst)):  # 遍历文字序列，对状态序列进行统计
+        cur_status = status_lst[i]  # 获取当前文字的状态
+        cur_ch = ch_lst[i]  # 获取当前文字
+        # 统计初始概率π
+        if i == 0:
+            # 为什么不用BMES，而用0123，就是方便状态可以直接作为索引形式
+            pi[cur_status] += 1.0  # 这里是状态分子部分想加
+            pi_sum += 1.0  # 分母求和 不管哪个状态，分母都加1，为了求概率
+        # 统计发射概率B
+        if B[cur_status].get(cur_ch, -1) == -1:
+            B[cur_status][cur_ch] = 0.0
+        B[cur_status][cur_ch] += 1.0
+        B_sum[cur_status] += 1.0
+        # 状态转移概率A
+        if i + 1 < len(ch_lst):
+            A[cur_status][status_lst[i + 1]] += 1.0
+            A_sum[cur_status] += 1.0
+
+    # break
+f_txt.close()
+
+# print("π")
+# print(pi)
+# print(pi_sum)
+# print("A")
+# print(A)
+# print(A_sum)
+# print("B")
+# print(B)
+# print(B_sum)
+
+# 将统计结果转换成概率形式
