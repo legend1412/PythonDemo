@@ -1,4 +1,7 @@
+import math
+
 data_path = '../data/allfiles.txt'
+mode_path = '../data/mid_data/hmm.mod'
 
 # 一、初始化模型参数（π初始状态，a转移矩阵，b发射矩阵）
 # 其中状态为：B，M，E，S，每个中文字都会对应其中的一个状态
@@ -107,3 +110,21 @@ f_txt.close()
 # print(B_sum)
 
 # 将统计结果转换成概率形式
+for i in range(STATUS_NUM):
+    # π 因为pi[i]等于0，无法取log，属于负无穷（-∞）
+    pi[i] = -100000.0 if pi[i] == 0.0 else math.log(pi[i] / pi_sum)
+
+    # A
+    for j in range(STATUS_NUM):
+        A[i][j] = -100000.0 if A[i][j] == 0.0 else math.log(A[i][j] / A_sum[i])
+
+    # B 
+    for ch in B[i]:
+        B[i][ch] = math.log(B[i][ch] / B_sum[i])
+
+# 存储模型->模型文件
+f_mod = open(mode_path, 'w', encoding='utf-8')
+f_mod.write(str(pi) + '\n')
+f_mod.write(str(A) + '\n')
+f_mod.write(str(B) + '\n')
+f_mod.close()
