@@ -26,10 +26,53 @@ A_sum = [0.0 for row in range(STATUS_NUM)]  # 存储每一行数据的分母，�
 B = [dict() for row in range(STATUS_NUM)]
 B_sum = [0.0 for row in range(STATUS_NUM)]
 
+
+#  将词转换成单个字的列表:'动态规划'=>['动','态','规','划']
+def get_word_ch(word):
+    ch_lst = []
+    for ch in word:
+        ch_lst.append(ch)
+    return ch_lst
+
+
 f_txt = open(data_path, 'r', encoding='utf-8')
 
 while True:
     line = f_txt.readline()  # 读一行相当于一篇文章
-    print(line)
+    # print(line)
+    # 读完所有文章退出循环
+    if not line:
+        break
 
+    words = line.strip().split()
+    # print(words)
+
+    ch_lst = []  # 每个词所对应的中文单个字的数组 '动态规划'=>'动','态','规','划'
+    status_lst = []  # 对应单个中文字的状态 [B,M,E,S]=>[0,1,2,3]
+    for word in words[:-1]:
+        # print(word)
+        cur_ch_lst = get_word_ch(word)
+        cur_ch_num = len(cur_ch_lst)  # 这个词有多少个字
+
+        # for循环可以都初始化成1，那面下面的赋值M那段就可以去掉
+        # 初始化字符状态
+        cur_status_lst = [0 for ch in range(cur_ch_num)]
+        # S:3
+        if cur_ch_num == 1:
+            cur_status_lst[0] = 3
+        else:  # 否则就是BME
+            # 标识B:0
+            cur_status_lst[0] = 0
+            # 标识E:2
+            cur_status_lst[-1] = 2
+            # 标识M：1，中间的全部为M
+            for i in range(1, cur_ch_num - 1):
+                cur_status_lst[i] = 1
+        ch_lst.extend(cur_ch_lst)
+        status_lst.extend(cur_status_lst)
+    # ch_lst,status_lst 每篇文章的字和状态
+    # print(ch_lst)
+    # print(status_lst)
+
+    
     break

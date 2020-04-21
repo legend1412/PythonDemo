@@ -77,3 +77,5 @@ def cosine_dis(x, y):
 
 
 print(cosine_dis(np.array([5, 1, 2, 2]), np.array([1, 5, 5, 5])))
+
+print([i for i in range(1, 2)])
