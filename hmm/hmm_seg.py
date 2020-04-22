@@ -1,5 +1,5 @@
 mode_path = '../data/mid_data/hmm.mod'
-
+filter_val = 0.02
 # 1、加载模型
 with open(mode_path, 'r', encoding='utf-8') as f:
     pi = eval(f.readline())
@@ -137,40 +137,49 @@ def veterbisame(sentence, sep=' '):
             status_matrix[j][i][0] = max_p + cur_B
             status_matrix[j][i][1] = max_status
 
-    # get max prob path
-    max_end_p = None
-    max_end_status = None
+    last_prob_lst = []
 
-    # 找最后一层中概率最大的，也就是最终路径最大的
     for i in range(STATUS_NUM):
-        if max_end_p is None or status_matrix[i][ch_num - 1][0] > max_end_p:
-            max_end_p = status_matrix[i][ch_num - 1][0]
-            max_end_status = i
+        last_prob_lst.append((status_matrix[i][ch_num - 1][0], status_matrix[i][ch_num - 1][1],i))
+    sorted_last_lst = sorted(last_prob_lst, key=lambda x: x[0], reverse=True)
+    # print(sorted_last_lst)
 
-    # 根据之前记录的往回找最优路径
-    best_status_lst = [0 for ch in range(ch_num)]
-    best_status_lst[ch_num - 1] = max_end_status
+    def get_best_seg(max_end_status):
+        # 根据之前记录的往回找最优路径
+        best_status_lst = [0 for ch in range(ch_num)]
+        best_status_lst[ch_num - 1] = max_end_status
+        c = ch_num - 1
+        cur_best_status = max_end_status
+        while c > 0:
+            pre_best_status = status_matrix[cur_best_status][c][1]
+            best_status_lst[c - 1] = pre_best_status
+            cur_best_status = pre_best_status
+            c -= 1
 
-    c = ch_num - 1
-    cur_best_status = max_end_status
-    while c > 0:
-        pre_best_status = status_matrix[cur_best_status][c][1]
-        best_status_lst[c - 1] = pre_best_status
-        cur_best_status = pre_best_status
-        c -= 1
+        # 实现切词
+        rest = ''
+        rest += ch_lst[0]
+        for i in range(1, ch_num):
+            # i-1是E、S或者i是B、S
+            if best_status_lst[i - 1] in {2, 3} or best_status_lst[i] in {0, 3}:
+                rest += sep
 
-    # 实现切词
-    rest = ''
-    rest += ch_lst[0]
-    for i in range(1, ch_num):
-        # i-1是E、S或者i是B、S
-        if best_status_lst[i - 1] in {2, 3} or best_status_lst[i] in {0, 3}:
-            rest += sep
+            rest += ch_lst[i]
+        return rest
 
-        rest += ch_lst[i]
-    return rest
+    i = 0
+    res = []
+    max_end_p = sorted_last_lst[0][0]
+    while (max_end_p - sorted_last_lst[i][0]) < filter_val:
+        # 调用获取最优切分方法
+        max_end_status = sorted_last_lst[i][2]
+        res.append(get_best_seg(max_end_status))
+        i += 1
+        return res
 
 
 if __name__ == '__main__':
     s = '得到概率最大的状态组合方式'
-    print(veterbinodiff(s, ' '))
+    s1 = '结巴分词里会结合词性，状态会更多'
+    s2 = ''
+    print(veterbisame(s, ' '))
