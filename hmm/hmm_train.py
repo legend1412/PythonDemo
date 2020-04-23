@@ -119,6 +119,7 @@ for i in range(STATUS_NUM):
         A[i][j] = -100000.0 if A[i][j] == 0.0 else math.log(A[i][j] / A_sum[i])
 
     # B
+    # test
     for ch in B[i]:
         B[i][ch] = math.log(B[i][ch] / B_sum[i])
 
