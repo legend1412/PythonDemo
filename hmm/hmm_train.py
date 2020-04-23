@@ -129,4 +129,3 @@ f_mod.write(str(A) + '\n')
 f_mod.write(str(B) + '\n')
 f_mod.close()
 
-print("")
