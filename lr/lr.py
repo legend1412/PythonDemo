@@ -40,10 +40,10 @@ def plot_function(data, label, weights=None):
     ax.scatter(x2, y2, s=100, c='black')
     if weights is not None:
         x = np.arange(-3.0, 3.0, 0.1)
-        y = -(weights[0] + weights[1] * x / weights[2])  # x2=-(w1x1+w[0])/w2
+        y = -(weights[0] + weights[1] * x) / weights[2]  # x2=-(w1x1+w[0])/w2
         ax.plot(x, y)
         plt.xlabel('X1')
-        plt.xlabel('X2')
+        plt.ylabel('X2')
     plt.show()
 
 
@@ -56,13 +56,13 @@ data2 = np.mat(datainit)  # 100*3 X 矩阵，把datainit中进行变换,100是�
 # print(data2)
 label2 = np.mat(labelinit).transpose()  # 转置 100*1
 # print(label2)
-m, n = np.shape(data2)
+m, n = np.shape(data2)  # 100,3
 
 # 梯度下降法
 # 参数初始化
 alpha = 0.001  # 步长
 maxiter = 10000
-weight = np.ones((n, 1))
+weight = np.ones((n, 1))  # 3*1，w1<=>b
 # print(weight)
 
 # 记录迭代次数
