@@ -62,7 +62,7 @@ def user_sim(train_data):
     # print(sorted(C['196'].items(), key=lambda x: x[1], reverse=False)[:10])
 
 
-def recommend(train_data, user, c, k=5):
+def recommend(user, train_data, c, k=5):
     rank = dict()
     # 用户之前评论过的电影
     watched_items = train_data[user].keys()
@@ -78,7 +78,8 @@ def recommend(train_data, user, c, k=5):
             # 物品的打分是①用户相似度[0-1]*②用户相似用户对电影的打分[0-5]
             # 相似用户评论了同一个物品是累加操作
             rank[i] += cuv * rating
-    return sorted(rank.items(), key=lambda x: x[1], reverse=True)[:10]
+    return  rank
+    # return sorted(rank.items(), key=lambda x: x[1], reverse=True)[:10]
 
 
 if __name__ == '__main__':
@@ -86,5 +87,5 @@ if __name__ == '__main__':
     # w = user_normal_simmilarity(train_data1)
     c1 = user_sim(train_data1)
     uid = '13'
-    b = recommend(train_data1, uid, c1)
+    b = recommend(uid, train_data1, c1)
     print(b)

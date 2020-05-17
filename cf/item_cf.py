@@ -31,14 +31,15 @@ def item_sim(train_data):
     return c
 
 
-def recomendation(train_data, user_id, c, k):
+def recomendation(train_data, user_id, C, k):
     # 存放最终结果
     rank = dict()
     sum_ = dict()
     ru = train_data[user_id]
-    for i, rating_old, time in ru.items():
-        rating = rating_old * fun(time)
-        for j, sim_score in sorted(c[i].items(), key=lambda x: x[1], reverse=True)[:k]:
+    # for i, rating_old, time in ru.items():
+        # rating = rating_old * fun(time)
+    for i, rating in ru.items():
+        for j, sim_score in sorted(C[i].items(), key=lambda x: x[1], reverse=True)[:k]:
             # 过滤这个user已经打过分的item
             if j in ru:
                 continue

@@ -6,3 +6,4 @@ data/music_data/
 cf/__pycache__/util.cpython-36.pyc
 data/allfiles.txt
 data/mid_data/hmm.mod
+/data/music_mid_data/
