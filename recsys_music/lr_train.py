@@ -83,11 +83,7 @@ lr = LogisticRegression(penalty='12', dual=False, tol=1e-4, C=1.0, fit_intercept
                         class_weight=None, random_state=None, solver='liblinear', max_iter=100,
                         multi_class='ovr', verbose=1, warm_start=False, n_jobs=-1)
 
-sc = StandardScaler()
-x_train_std = sc.fit_transform(X_train)
-x_test_std = sc.transform(X_test)
-lr.fit(x_train_std, Y_train)
-# model = lr.fit(X_train, Y_train)
+model = lr.fitr_tranform(X_train, Y_train)
 print('w:%s,b:%s' % (lr.coef_, lr.intercept_))
 print('score:%.4f' % lr.score(X_test, Y_test))
 
