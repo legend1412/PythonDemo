@@ -79,11 +79,11 @@ with open(cross_file, 'w', encoding='utf-8') as f:
 
 # 随机划分训练集train test split[0.7,0.3]
 X_train, X_test, Y_train, Y_test = train_test_split(df.values, labels, test_size=0.3, random_state=2019)
-lr = LogisticRegression(penalty='12', dual=False, tol=1e-4, C=1.0, fit_intercept=True, intercept_scaling=1,
+lr = LogisticRegression(penalty='l2', dual=False, tol=1e-4, C=1.0, fit_intercept=True, intercept_scaling=1,
                         class_weight=None, random_state=None, solver='liblinear', max_iter=100,
                         multi_class='ovr', verbose=1, warm_start=False, n_jobs=-1)
 
-model = lr.fitr_tranform(X_train, Y_train)
+model = lr.fit_tranform(X_train, Y_train)
 print('w:%s,b:%s' % (lr.coef_, lr.intercept_))
 print('score:%.4f' % lr.score(X_test, Y_test))
 
