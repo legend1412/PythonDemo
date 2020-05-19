@@ -3,7 +3,11 @@
 data/allfiles/
 data/music_data/
 
-cf/__pycache__/util.cpython-36.pyc
+cf/__pycache__/
 data/allfiles.txt
 data/mid_data/hmm.mod
 /data/music_mid_data/
+cf/__pycache__
+cf/__pycache__/
+recsys_music/__pycache__/
+recsys_music/__pycache__/
