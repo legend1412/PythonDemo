@@ -3,8 +3,8 @@ import math
 
 def create_data_set():
     init_data_set = [[1, 1, 'yes'], [1, 1, 'yse'], [1, 0, 'no'], [0, 1, 'no'], [0, 1, 'no']]
-    init_cols = ['no surfacing', 'flippers']
-    return init_data_set, init_cols
+    init_cols_set = ['no surfacing', 'flippers']
+    return init_data_set, init_cols_set
 
 
 # 计算熵
@@ -17,12 +17,12 @@ def calc_ent(data_set):
             label_cnt[cur_label] = 0
         label_cnt[cur_label] += 1
 
-    E = 0.0
+    e = 0.0
     for key in label_cnt:
         prob = float(label_cnt[key]) / n
         # 以e为底
-        E -= prob * math.log(prob)
-    return E
+        e -= prob * math.log(prob)
+    return e
 
 
 # 划分数据集：根据特征每个值划分数据集 i:age,value:青年/中年/老年
@@ -102,6 +102,6 @@ def create_tree(data_set, cols):
 
 
 if __name__ == '__main__':
-    init_data, cols = create_data_set()
-    treeModel = create_tree(init_data, cols)
+    init_data, init_cols = create_data_set()
+    treeModel = create_tree(init_data, init_cols)
     print(treeModel)

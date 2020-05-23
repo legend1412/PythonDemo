@@ -2,7 +2,7 @@
 .idea/
 data/allfiles/
 data/music_data/
-
+data/
 cf/__pycache__/
 data/allfiles.txt
 data/mid_data/hmm.mod
@@ -11,3 +11,4 @@ cf/__pycache__
 cf/__pycache__/
 recsys_music/__pycache__/
 recsys_music/__pycache__/
+/dt/tree.dot
