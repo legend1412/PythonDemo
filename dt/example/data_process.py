@@ -54,11 +54,11 @@ del prods
 # 2.加入orders info到训练集priors
 print('add order info to priors')
 # 以order的order_id为主key
-orders.set_index('order_id', inplace=True, drop=True)
+orders.set_index('order_id', inplace=True, drop=False)
 # 将所有order信息关联到priors中
 priors = priors.join(orders, on='order_id', rsuffix='_')
 # 有重复的列的后缀，'_'
-priors.drop('order_id', inplace=True, axis=1)
+priors.drop('order_id_', inplace=True, axis=1)
 
 # 3.user feature
 print('computing user f')
@@ -115,7 +115,7 @@ print('split orders:train,test')
 test_orders = orders[orders.eval_set == 'test']
 train_orders = orders[orders.eval_set == 'test']
 # train数据以(order_id,product_id)为key
-train.set_index(['index_id', 'product_id'], inplace=True, drop=False)
+train.set_index(['order_id', 'product_id'], inplace=True, drop=False)
 
 
 def features(selected_orders, labels_given=False):
@@ -156,13 +156,13 @@ def features(selected_orders, labels_given=False):
     print('order related features')
     df['order_hour_of_day'] = df.order_id.map(orders.order_hour_of_day)
     df['days_since_prior_order'] = df.order_id.map(orders.days_since_prior_order)
-    df['days_sicne_ratio'] = df.days_since_priors_order / df.user_average_days_between_orders
+    df['days_since_ratio'] = df.days_since_priors_order / df.user_average_days_between_orders
 
     print('product related features')
     df['aisle_id'] = df.product_id.map(products.aisle_id)
     df['department_id'] = df.product_id.map(products.department_id)
     df['product_orders'] = df.product_id.map(products.orders).astype(np.int32)
-    df['procut_reorders'] = df.product_id.map(products.reorders)
+    df['product_reorders'] = df.product_id.map(products.reorders)
     df['product_reorder_rate'] = df.product_id.map(products.reorder_rate)
 
     print('user_X_product related features')  # 10/13
@@ -179,7 +179,7 @@ def features(selected_orders, labels_given=False):
     # 最后一次购买这个物品在倒数第几个订单[1,1,1,0,1,0,1,0,0]
     df['UP_orders_since_last'] = df.user_total_orders - df.UP_last_order_id.map(orders.order_number)
     # 当前订单与最后订单时间差异（hour）
-    df['UP_delta_hour_va_last'] = abs(df.order_hour_of_day - df.UP_last_order_id.map(orders.order_hour_of_day)).map(
+    df['UP_delta_hour_vs_last'] = abs(df.order_hour_of_day - df.UP_last_order_id.map(orders.order_hour_of_day)).map(
         lambda x: min(x, 24 - x)).astype(np.int8)
 
     df.frop(['UP_last_order_id', 'z'], axis=1, inplace=True)
