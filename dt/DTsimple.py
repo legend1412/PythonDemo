@@ -41,7 +41,7 @@ def split_data_set(data_set, i, value):
 # 选择最好的特征进行分裂
 def choose_best_feature_to_split(data_set):
     num_features = len(data_set[0]) - 1
-    base_entropy = calc_ent(data_set)
+    base_entropy = calc_ent(data_set)  # 第一层的熵
     best_info_gain = 0.0
     best_feature = -1
     # i相当于年龄
@@ -58,7 +58,7 @@ def choose_best_feature_to_split(data_set):
             # 青年、中年、老年在总样本（上一次划分数据库）中的占比
             prob = len(sub_data_set) / float(len(data_set))
             # 划分之后的数据集的信息entropy
-            new_entropy += prob * calc_ent(data_set)
+            new_entropy += prob * calc_ent(sub_data_set)
         info_gain = base_entropy - new_entropy
         if info_gain > best_info_gain:
             best_info_gain = info_gain
