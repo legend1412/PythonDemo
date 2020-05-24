@@ -119,6 +119,12 @@ train.set_index(['order_id', 'product_id'], inplace=True, drop=False)
 
 
 def features(selected_orders, labels_given=False):
+    """
+
+    :param selected_orders:
+    :param labels_given:
+    :return:
+    """
     print('build candidate list')
     order_list = []
     product_list = []
@@ -156,7 +162,7 @@ def features(selected_orders, labels_given=False):
     print('order related features')
     df['order_hour_of_day'] = df.order_id.map(orders.order_hour_of_day)
     df['days_since_prior_order'] = df.order_id.map(orders.days_since_prior_order)
-    df['days_since_ratio'] = df.days_since_priors_order / df.user_average_days_between_orders
+    df['days_since_ratio'] = df.days_since_prior_order / df.user_average_days_between_orders
 
     print('product related features')
     df['aisle_id'] = df.product_id.map(products.aisle_id)
@@ -182,7 +188,7 @@ def features(selected_orders, labels_given=False):
     df['UP_delta_hour_vs_last'] = abs(df.order_hour_of_day - df.UP_last_order_id.map(orders.order_hour_of_day)).map(
         lambda x: min(x, 24 - x)).astype(np.int8)
 
-    df.frop(['UP_last_order_id', 'z'], axis=1, inplace=True)
+    df.drop(['UP_last_order_id', 'z'], axis=1, inplace=True)
     print(df.dtypes)
     print(df.memory_usage())
     return df, labels
