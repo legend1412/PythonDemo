@@ -4,7 +4,7 @@ import numpy as np
 """
 load data
 """
-idir = 'E://GitHub//PythonDemo//data//'
+idir = 'D://GitHub//PythonDemo//data//'
 
 priors = pd.read_csv(idir + 'order_products_prior.csv', dtype={
     'order_id': np.int32,
@@ -157,7 +157,7 @@ def features(selected_orders, labels_given=False):
     df['user_total_items'] = df.user_id.map(users.total_items)
     df['total_distinct_items'] = df.user_id.map(users.total_distinct_items)
     df['user_average_days_between_orders'] = df.user_id.map(users.average_days_between_orders)
-    df['user_average_basker'] = df.user_id.map(users.average_basket)
+    df['user_average_basket'] = df.user_id.map(users.average_basket)
 
     print('order related features')
     df['order_hour_of_day'] = df.order_id.map(orders.order_hour_of_day)
@@ -204,5 +204,5 @@ f_to_use = ['user_total_orders', 'user_total_items', 'total_distinct_items',
 
 df_train, init_labels = features(train_orders, labels_given=True)
 print('Train Columns:', df_train.columns)
-df_train[f_to_use].to_csv(idir + 'train_feat.csv', index=False)
+df_train[f_to_use].to_csv(idir + 'train_feat.csv', index=0)
 np.save(idir + 'labels.npy', init_labels)

@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 idir = 'E://GitHub//PythonDemo//data//'
-df_train = pd.read_csv(idir + 'train_feat.csv').fillna(0.).to_sparse()
+df_train = pd.read_csv(idir + 'train_feat.csv').fillna(0.)
+# print(df_train.head())
 labels = np.load(idir + 'labels.npy')
 
 X_train, X_test, y_train, y_test = train_test_split(df_train, labels, test_size=0.2, random_state=2019)

@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_error  # 平方绝对误差
 from sklearn.metrics import r2_score  # R square
 
 idir = 'E://GitHub//PythonDemo//data//'
-df_train = pd.read_csv(idir + 'train_feat.csv').fillna(0.).to_sparse()
+df_train = pd.read_csv(idir + 'train_feat.csv').fillna(0.)
 print(df_train)
 labels = np.load(idir + 'labels.npy')
 print(labels)

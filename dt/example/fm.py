@@ -27,7 +27,7 @@ class FM(object):
         self.p = feature_length
 
     def add_placholders(self):
-        self.X = tf.sparse_plachholder('float32', [None, self.p])
+        self.X = tf.sparse_placeholder('float32', [None, self.p])
         self.y = tf.paceholder('int64', [None, ])
         self.keep_prob = tf.placeholder('float32')
 
