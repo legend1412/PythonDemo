@@ -4,7 +4,7 @@ import numpy as np
 """
 load data
 """
-idir = 'D://GitHub//PythonDemo//data//'
+idir = 'E://GitHub//PythonDemo//data//'
 
 priors = pd.read_csv(idir + 'order_products_prior.csv', dtype={
     'order_id': np.int32,
