@@ -113,7 +113,7 @@ del priors
 # 5.从orders中划分训练集和测试集
 print('split orders:train,test')
 test_orders = orders[orders.eval_set == 'test']
-train_orders = orders[orders.eval_set == 'test']
+train_orders = orders[orders.eval_set == 'train']
 # train数据以(order_id,product_id)为key
 train.set_index(['order_id', 'product_id'], inplace=True, drop=False)
 
