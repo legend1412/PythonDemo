@@ -5,6 +5,7 @@ from sklearn.datasets import load_iris
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split, cross_val_score
 from IPython.display import Image
+import numpy as np
 
 iris = load_iris()
 
@@ -32,3 +33,14 @@ a = (0, 0)
 b = (1, -1)
 
 print(max(a, b))
+
+# .npy文件是numpy专用的二进制文件
+arr = np.array([[1, 2], [3, 4]])
+
+# 保存.npy文件
+np.save("../data/test.npy", arr)
+print("save .npy done")
+
+# 读取.npy文件
+print(np.load("../data/test.npy"))
+print("load .npy done")
