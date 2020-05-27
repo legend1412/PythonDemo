@@ -8,7 +8,6 @@ data/allfiles.txt
 data/mid_data/hmm.mod
 /data/music_mid_data/
 cf/__pycache__
-cf/__pycache__/
-recsys_music/__pycache__/
 recsys_music/__pycache__/
 /dt/tree.dot
+/dt/example/train_logs/
