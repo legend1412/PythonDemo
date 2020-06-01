@@ -17,10 +17,20 @@ del df_train
 del labels
 # [买：100，不买：10]
 # dt=DecisionTreeClassifier()
-rfr = RandomForestRegressor(n_estimators=10, criterion='mse', max_depth=None, min_samples_split=200,
-                            min_samples_leaf=100, min_weight_fraction_leaf=0., max_features='auto',
-                            max_leaf_nodes=None, bootstrap=True, oob_score=False, n_jobs=3, random_state=None,
-                            verbose=0, warm_start=False)
+rfr = RandomForestRegressor(n_estimators=10,  # 几棵树
+                            criterion='mse',  # (y-y_hat)^2
+                            max_depth=None,  # 数的深度
+                            min_samples_split=200,
+                            min_samples_leaf=100,
+                            min_weight_fraction_leaf=0.,
+                            max_features='auto',
+                            max_leaf_nodes=None,
+                            bootstrap=True,
+                            oob_score=False,
+                            n_jobs=3,
+                            random_state=None,
+                            verbose=0,
+                            warm_start=False)
 
 rfr.fit(X_train, y_train)
 print(rfr.feature_importances_)
@@ -31,6 +41,7 @@ print('mse:', mse_test)
 
 rmse_test = mse_test ** 0.5
 print('Rmse:', rmse_test)
+
 print('mean_absolute_error:', mean_absolute_error(y_test, y_pred))
 print('mean_squared_error:', mean_squared_error(y_test, y_pred))
 print('r2_score:', r2_score(y_test, y_pred))
