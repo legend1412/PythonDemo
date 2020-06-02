@@ -16,3 +16,6 @@ print("save .npy done")
 pre_train = np.load("../data/labels.npy")
 print(pre_train)
 # print("load .npy done")
+
+random_state = np.random.RandomState(0)
+print(random_state.randn(2, 3))
