@@ -8,6 +8,7 @@ from sklearn.metrics import mean_absolute_error  # 平方绝对误差
 from sklearn.metrics import r2_score  # R square
 
 idir = 'E://GitHub//PythonDemo//data//'
+# df_train1 = pd.DataFrame.sparse.from_spmatrix()
 df_train = pd.read_csv(idir + 'train_feat.csv').fillna(0.)
 print(df_train)
 labels = np.load(idir + 'labels.npy')
@@ -28,7 +29,7 @@ rfr = RandomForestRegressor(n_estimators=10,  # 几棵树
                             bootstrap=True,
                             oob_score=False,
                             n_jobs=3,
-                            random_state=None,
+                            random_state=2020,
                             verbose=0,
                             warm_start=False)
 

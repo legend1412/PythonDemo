@@ -24,7 +24,7 @@ param = {'booster': 'gbtree',
          'colsample_bytree': 0.8,
          'max_depth': 6,
          'eta': 0.03,
-         'silent': 0,
+         'silent': 1,
          'objective': 'binary:logistic',
          'nthread': 4,
          'eval_metric': 'auc'}
