@@ -34,15 +34,15 @@ y_score = svm_model.decision_function(X_test)
 
 # compute ROC curve and ROC area for each class
 # fp rate:原本是错的，预测是对的比例（越小越好，0是理想）
-# tprate:原本是对的，预测是对的比例（越大越好，1是理想）
+# tp rate:原本是对的，预测是对的比例（越大越好，1是理想）
 # 分类别0,1   0.36<0.5=>0
 fpr, tpr, threashold = roc_curve(y_test, y_score)
 roc_auc = auc(fpr, tpr)
 print(roc_auc)
 
-plt.figure()
+# plt.figure()
 lw = 2
-plt.figure(figsize=(10, 10))
+plt.figure(figsize=(8, 8))
 # 假正率为横坐标，真正率为纵坐标做曲线
 plt.plot(fpr, tpr, color='darkorange', lw=lw, label='ROC curve (area = %0.2f)' % roc_auc)
 plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
