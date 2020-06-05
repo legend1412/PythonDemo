@@ -9,7 +9,7 @@ print("accuracy_score:", accuracy_score(y_true, y_pred))
 
 y_pred = [0, 0, 2, 2, 0, 2]
 y_true = [2, 0, 2, 2, 0, 1]
-print("confusion_matrix:", confusion_matrix(y_true, y_pred))
+print("confusion_matrix:\r\n", confusion_matrix(y_true, y_pred))
 
 # 0 1 2
 # 0[[2 0 0]
@@ -19,7 +19,7 @@ print("confusion_matrix:", confusion_matrix(y_true, y_pred))
 y_pred = [0, 1, 0, 1, 0, 1, 0, 1]
 y_true = [0, 0, 0, 1, 1, 1, 1, 1]
 tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
-print(tn, fp, fn, fp)  # (2,1,2,3)
+print("tn, fp, fn, tp:", tn, fp, fn, fp)  # (2,1,2,3)
 
 
 def calcauc(labels, probs):

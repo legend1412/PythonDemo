@@ -23,7 +23,7 @@ X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
 # shuffle and split training and test sets
 X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=.3, random_state=0)
 # learn to predict each class against the other
-svm = svm.fit(X_train, y_train)
+svm_model = svm.fit(X_train, y_train)
 y_score = svm_model.decision_function(X_test)
 
 # compute ROC curve and ROC area for each class

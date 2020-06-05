@@ -20,7 +20,7 @@ del labels
 # dt=DecisionTreeClassifier()
 rfr = RandomForestRegressor(n_estimators=10,  # 几棵树
                             criterion='mse',  # (y-y_hat)^2
-                            max_depth=None,  # 数的深度
+                            max_depth=10,  # 数的深度
                             min_samples_split=200,
                             min_samples_leaf=100,
                             min_weight_fraction_leaf=0.,
