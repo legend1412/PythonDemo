@@ -51,12 +51,13 @@ def calcauc(labels, probs):
     return number / (n * p)
 
 
-y = np.array([1, 0, 0, 0, 1, 0, 1, 0, ])
+y = np.array([1, 0, 0, 0, 1, 0, 1, 0])
 pred = np.array([0.9, 0.8, 0.3, 0.1, 0.4, 0.9, 0.66, 0.7])
 print('auc=', calcauc(y, pred))
 print('roc_auc=', roc_auc_score(y, pred))
 
 '''
+优化下循环，扫描一次数据，进行排序，把正样本拿出来
 A 0 0.1
 C 1 0.3
 B 0 0.4
@@ -69,3 +70,7 @@ C,D,E
 两层for循环，找规律变成一次循环 正样本个数P
 ((2+4)-(p(p+1)/2))/n*p=正样本>负样本的个数 n(n+1)/2
 '''
+y = np.array([0, 1, 0, 1, 1])
+pred = np.array([0.1, 0.3, 0.4, 0.8, 0.9])
+print('auc=', calcauc(y, pred))
+print('roc_auc=', roc_auc_score(y, pred))
