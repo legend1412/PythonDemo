@@ -20,7 +20,8 @@ def getclusterdata(flag='c', ns=1000, nf=2, centers=None, cluster_std=None):
     if flag == 'c':
         cluster_x, cluster_y = datasets.make_circles(n_samples=ns, factor=.6, noise=.05)
     elif flag == 'b':
-        cluster_x, cluster_y = datasets.make_circles(n_samples=ns, n_features=nf, centers=centers, cluster_std=cluster_std)
+        cluster_x, cluster_y = datasets.make_circles(n_samples=ns, n_features=nf, centers=centers,
+                                                     cluster_std=cluster_std)
     else:
         cluster_x, cluster_y = datasets.make_moons(n_samples=ns, noise=0.1, random_state=1)
     return cluster_x, cluster_y
