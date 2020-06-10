@@ -35,7 +35,7 @@ def load_data():
         with open(file_path + '/' + filename, 'r', encoding='utf-8') as f:
             word_freq = dict()  # tf 统计逻辑word count 结果需要的字典结构
             for line in f.readlines():
-                words = line.strip().split()
+                words = line.strip().split(' ')
                 for word in words:
                     if len(word.strip()) < 1:
                         continue
@@ -44,7 +44,7 @@ def load_data():
                         word_dict[word] = len(word_dict)
                     wid = word_dict.get(word, -1)
                     # word count 统计逻辑
-                    if word_freq.get(word, -1) == -1:
+                    if word_freq.get(wid, -1) == -1:
                         word_freq[wid] = 1
                     else:
                         word_freq[wid] += 1
