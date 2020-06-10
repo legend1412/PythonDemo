@@ -20,19 +20,19 @@ for line in fr.readlines():
 # 画图 将样本点画出来
 def plot_function(data, label, weights=None):
     # np是numpy的别名，获取data样本数量
-    n = np.shape(data)[0]
+    k = np.shape(data)[0]
     # 坐标x1，y1存标签为1的，坐标x2，y2存标签为0的
     x1 = []
     y1 = []
     x2 = []
     y2 = []
-    for i in range(n):
-        if int(label[i]) == 1:
-            x1.append(data[i][1])
-            y1.append(data[i][2])
+    for j in range(k):
+        if int(label[j]) == 1:
+            x1.append(data[j][1])
+            y1.append(data[j][2])
         else:
-            x2.append(data[i][1])
-            y2.append(data[i][2])
+            x2.append(data[j][1])
+            y2.append(data[j][2])
     fig = plt.figure()
     # title
     ax = fig.add_subplot(111)
