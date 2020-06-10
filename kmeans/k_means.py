@@ -26,7 +26,7 @@ def load_data():
     doc_dict_load_data = dict()
     i = 0
 
-    for filename in os.listdir(file_path):  # filenmae:1business
+    for filename in os.listdir(file_path):  # filename:1business
         doc_name = filename.split('.')[0]
         label = label_pattern.findall(doc_name)[0]
         doc_label_load_data[doc_name] = label
@@ -198,7 +198,7 @@ if __name__ == '__main__':
             center_dict[k] = tmp_k_center
         wcss_sub = abs(new_WCSS - wcss)
         print(iter_num, wcss_sub, center_mv, '\t WCSS:', new_WCSS)
-        iter_num = +1
+        iter_num += 1
 
     # write doc ->cluster
     for k in k_doc.keys():
