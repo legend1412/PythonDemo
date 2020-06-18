@@ -70,4 +70,3 @@ with tf.Session() as sess:
     print(sess.run(weight_out))  # [4,5]
     print(sess.run(reshape_xval))  # [[[1],[1]]]
     print((sess.run(w_X_x)))  # [4,5]
-
