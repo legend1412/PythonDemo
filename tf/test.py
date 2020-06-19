@@ -51,9 +51,9 @@ init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
     for step in range(200):
-        sess.run(optimizer, feed_dict={x: x_data, y_true: y_data})
+        sess.run(optimizer, feed_dict={x: step[0], y_true: step[1]})
         if step % 20 == 0:
-            print(sess.run([w, b], feed_dict={x: x_data, y: y_data}))
+            print(sess.run([w, b], feed_dict={x: step[0], y_true: step[1]}))
 
 # [1,0,1]
 a = [
