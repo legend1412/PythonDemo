@@ -9,7 +9,7 @@ from sklearn.preprocessing import StandardScaler
 # 目标是要学习w（权重），快速求解w的值，做了简单w的初始化
 # 1、层数多的时候，梯度会消失，w更新不大
 # 2、zero初始化，学习起来相对比较慢
-def init_w(f_in, f_out, constant=2):
+def init_w(f_in, f_out, constant=1):
     low = -constant * np.sqrt(6 / (f_in + f_out))
     high = constant * np.sqrt(6 / (f_in + f_out))
     return tf.random_uniform((f_in, f_out), minval=low, maxval=high, dtype=tf.float32)
@@ -25,15 +25,17 @@ class AutoEncoder(object):
         :param optimizer:优化器，Adam
         :param scale:高斯噪声系数，0.1
         """
-        self.n_hidden = n_hidden
         self.n_input = n_input
+        self.n_hidden = n_hidden
         self.transfer = transfer_function
         self.scale = tf.placeholder(tf.float32)
         self.training_scale = scale
         netword_weigths = self._initialize_weights()
         self.weights = netword_weigths
+
         # model：定义网络结构
         self.x = tf.placeholder(tf.float32, [None, self.n_input])
+
         # sigmoid((x+噪音)*w1+b1) softplus((x+噪音)*w1+b1)
         self.hidden = self.transfer(tf.add(tf.matmul(self.x + scale * tf.random_uniform((n_input,)),
                                                      self.weights['w1']), self.weights['b1']))
@@ -55,6 +57,7 @@ class AutoEncoder(object):
         all_weight['w1'] = tf.Variable(init_w(self.n_input, self.n_hidden))
         # b初始化
         all_weight['b1'] = tf.Variable(tf.zeros([self.n_hidden]), dtype=tf.float32)
+
         all_weight['w2'] = tf.Variable(tf.zeros([self.n_hidden, self.n_input], dtype=tf.float32))
         all_weight['b2'] = tf.Variable(tf.zeros([self.n_input]), dtype=tf.float32)
         return all_weight
