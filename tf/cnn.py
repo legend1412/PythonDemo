@@ -11,6 +11,7 @@ sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 # 权重初始化
 def weight_variable(shape):
+
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial)
 
