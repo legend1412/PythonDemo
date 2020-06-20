@@ -1,6 +1,6 @@
 # -*- conding:UTF-8 -*-
 import tensorflow as tf
-import tensorflow.contrib.eager as tfe
+# import tensorflow.contrib.eager as tfe
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 from pprint import pprint
@@ -59,11 +59,12 @@ print(sess.run(hello))
 #         if step % 20 == 0:
 #             print(sess.run([w, b], feed_dict={x: step[0], y_true: step[1]}))
 #
-# # [1,0,1]
+# # tf.argmax(a, axis=1)=> [1,0,1]  tf.argmax(a, axis=0)=>[1,2]
+# axis=0；所有行扫一遍，取每一列最大的，axis=1：每一行最大的
 a = [
     [1, 2],  # 1
     [2, 1],  # 0
     [1, 3],  # 1
 ]
 with tf.Session() as sess:
-    print(sess.run(tf.argmax(a, axis=0)))
+    print(sess.run(tf.argmax(a, 0)))

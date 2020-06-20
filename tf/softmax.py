@@ -12,21 +12,21 @@ print(mnist.validation.images.shape, mnist.validation.labels.shape)  # (5000, 78
 # 定义session
 sess = tf.InteractiveSession()
 # 定义原本空间
-x = tf.placeholder(tf.float32, [None, 784])
+x = tf.compat.v1.placeholder(tf.float32, [None, 784])
 # 定义参数，并初始化  类别[0-9]有10个
 w = tf.Variable(tf.zeros([784, 10]))
-b = tf.Variable(tf.zeros[10])
+b = tf.Variable(tf.zeros([10]))
 
 # 定义model：x经过加权求和后做softmax非线性变化，得到类别概率[正向传播] p(y=label1|X)
 y = tf.nn.softmax(tf.add(tf.matmul(x, w), b))  # pred
 # 给真实标签展位置
-y_ = tf.placeholder(tf.float32, [None, 10])  # true
+y_ = tf.compat.v1.placeholder(tf.float32, [None, 10])  # true
 # 定义交叉熵为损失函数loss，定义怎么来算误差的
 # cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_*tf.log(y),reduction_indices=[1]))
 cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y))
 
 # 定义优化方式，BP，怎么求参数[用梯度下降法反向传播求参数，目标最小化损失函数cross_entropy]
-train_step = tf.train.GradientDescentOptimizer(learning_rate=0.2).minimize(cross_entropy)
+train_step = tf.compat.v1.train.GradientDescentOptimizer(learning_rate=0.2).minimize(cross_entropy)
 # --------------------------定义网络结构完毕-------------------------------------------
 
 # --------------------------评测----------------------------------
@@ -36,9 +36,9 @@ correct_pred = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))  # [0,0,0,0,0,0,1,0,0
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 
 # 初始化参数
-tf.global_variables_initializer().run()
+tf.compat.v1.global_variables_initializer().run()
 batch_size = 100  # dataset
-n_batch = mnist.train.num_examlpes // batch_size
+n_batch = mnist.train.num_examples // batch_size
 # 训练的过程，得到参数w，b
 for i in range(30):  # epoch
     # 扫一遍数据集

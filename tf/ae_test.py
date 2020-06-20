@@ -27,11 +27,11 @@ print(mnist.train.labels[2])
 img_show(im)
 
 # 定义原本空间
-x = tf.placeholder(tf.float32, [None, 784])
+x = tf.compat.v1.placeholder(tf.float32, [None, 784])
 print(type(mnist.train.images))
 
 # 定义参数，并初始化 类别[0-9] 有10个
-W = tf.Variable(tf.zeros[784, 10])  # 784 = 28*28
+W = tf.Variable(tf.zeros([784, 10]))  # 784 = 28*28
 b = tf.Variable(tf.zeros([10]))
 
 # 定义model：x经过加权求和后做softmox非线性变化，得到类别概率【正向传播】p(y=label|X)
