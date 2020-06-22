@@ -1,4 +1,4 @@
-# -*- conding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 import tensorflow as tf
 # import tensorflow.contrib.eager as tfe
 import numpy as np

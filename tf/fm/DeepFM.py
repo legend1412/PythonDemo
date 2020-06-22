@@ -21,7 +21,8 @@ class DeepFM(BaseEstimator, TransformerMixin):
                  batch_norm_decay=0.995, verbose=False, random_seed=2016, use_fm=True, usr_deep=True,
                  loss_type='logloss', eval_metric=roc_auc_score, l2_reg=0.0, greater_is_better=True):
         assert (use_fm or usr_deep)
-        assert loss_type in ['logloss', 'mse'], "loss_type can be either 'logloss' for calssification task or 'mse' for regression task"
+        assert loss_type in ['logloss', 'mse'], \
+            "loss_type can be either 'logloss' for calssification task or 'mse' for regression task"
 
         self.feature_fm = feature_size  # denote as M,size of the feature dictionary
         self.field_size = field_size  # denote as F,size of the feature fields
@@ -91,7 +92,8 @@ class DeepFM(BaseEstimator, TransformerMixin):
             self.squared_features_emb = tf.square(self.embedding)
             self.squared_sum_features_emb = tf.reduce_sum(self.squared_features_emb, 1)  # None*K
             # second order 1/2 (求和平方-平方求和)
-            self.y_second_order = 0.5 * tf.subtract(self.summed_features_emb_square, self.squared_sum_features_emb)  # None*K
+            self.y_second_order = 0.5 * tf.subtract(self.summed_features_emb_square,
+                                                    self.squared_sum_features_emb)  # None*K
             # 输出+dropout
             self.y_second_order = tf.nn.dropout(self.y_second_order, self.dropout_keep_fm[1])  # None*K
             # ------------------Deep component--------------深度部分
@@ -101,10 +103,12 @@ class DeepFM(BaseEstimator, TransformerMixin):
 
             for i in range(0, len(self.deep_layers)):
                 # wx+b加权求和
-                self.y_deep = tf.add(tf.matmul(self.y_deep, self.weights['layer_%d' % i]), self.weights['bias_%d' % i])  # None*layer[i]*1
+                self.y_deep = tf.add(tf.matmul(self.y_deep, self.weights['layer_%d' % i]),
+                                     self.weights['bias_%d' % i])  # None*layer[i]*1
                 # 在加权求和后，激励函数前增加batch norm
                 if self.batch_norm:
-                    self.y_deep = self.batch_norm_layer(self.y_deep, train_phase=self.train_phase, scope_bn='bn_%d' % i)  # None*layer[i]*1
+                    self.y_deep = self.batch_norm_layer(self.y_deep, train_phase=self.train_phase,
+                                                        scope_bn='bn_%d' % i)  # None*layer[i]*1
 
                 # 输入定义的relu激励函数
                 self.y_deep = self.deep_layers_activation(self.y_deep)
@@ -120,7 +124,8 @@ class DeepFM(BaseEstimator, TransformerMixin):
                     concat_input = self.y_deep
                 # 最后一层将所有节点（fm:y_first_order,y_second_order）和dnn（y_deep）拼成一个向量
                 # 再进行加权求和
-                self.out = tf.add(tf.matmul(concat_input, self.weights['concat_projection']), self.weights['concat_bias'])
+                self.out = tf.add(tf.matmul(concat_input, self.weights['concat_projection']),
+                                  self.weights['concat_bias'])
 
                 # loss
                 if self.loss_type == 'logloss':
@@ -134,11 +139,10 @@ class DeepFM(BaseEstimator, TransformerMixin):
                     self.loss += tf.contrib.layers.l2_regularizer(self.l2_reg)(self.weights['concat_projection'])
                     # 不一样的一点是deep需要对不同层的损失增加l2
                     if self.use_deep:
-                        for i in range(len(self.deep_layers)):
-                            self.loss += tf.contrib.laysers.l2_regularizer(self.l2_reg)(self.weights['layer_%d' % i])
+                        for j in range(len(self.deep_layers)):
+                            self.loss += tf.contrib.laysers.l2_regularizer(self.l2_reg)(self.weights['layer_%d' % j])
 
                 # optimizer
                 if self.optimizer_type == 'adam':
-                    self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate, betal=0.9, beta2=0.999,
+                    self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate, beta1=0.9, beta2=0.999,
                                                             epsilon=1e-8).minimize(self.loss)
-

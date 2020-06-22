@@ -1,17 +1,18 @@
-# -*- conding:UTF-8 -*-
+# -*- coding: UTF-8 -*-
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
 
-mnist = input_data.read_data_sets('../data/MNIST', one_hot=True)
+mnist = input_data.read_data_sets('../data/MNIST/', one_hot=True)
+
 gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.6)
 sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
 
 # sess = tf.Session()
 
+
 # 权重初始化
 def weight_variable(shape):
-
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial)
 
@@ -48,7 +49,7 @@ h_conv1 = tf.nn.relu(conv2d(x_image, w_conv1) + b_conv1)  # 32个28*28 feature m
 h_pool1 = max_pool_2x2(h_conv1)  # 32个14*14 feature maps
 
 # 第二层：这里为什么是channel=32?
-# 因为上一层生成了21个feature map,channel=1(原始图片channel)*32（feature map数量）
+# 因为上一层生成了32个feature map,channel=1(原始图片channel)*32（feature map数量）
 w_conv2 = weight_variable([5, 5, 32, 64])
 b_conv2 = bias_variable([64])
 
@@ -61,7 +62,7 @@ w_fc1 = weight_variable([7 * 7 * 64, 1024])
 b_fc1 = bias_variable([1024])
 
 h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
-h_fc1 = bias_variable([1024])
+h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, w_fc1) + b_fc1)
 
 # dropout
 # 1、按照一定概率丢失节点，可以减少过拟合
@@ -75,14 +76,16 @@ b_fc2 = bias_variable([10])
 
 y_conv = tf.nn.softmax(tf.matmul(h_fc1_drop, w_fc2) + b_fc2)
 # 训练设置
-y_ = tf.placeholder(tf.float32, shape=[None, 1])
-cross_entropy = tf.reduce_sum(y_ * tf.log(y_conv))
+y_ = tf.placeholder(tf.float32, shape=[None, 10])
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y_conv))
 
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 # 预测设置 index[0,1,2,3,4,5,6,7,8,9] [0.1,0.01,0.03,0.05,0.5,0.2,0.01,...]  [0,0,0,0,1,0,0,0,0,...]\
 correct_pred = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))  # [0,0,1,1,1]
-accuracy = tf.reduce_sum(tf.cast(correct_pred, tf.float32))
-sess.run(tf.initialize_all_variables())
+accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+
+# sess.run(tf.initialize_all_variables())
+sess.run(tf.global_variables_initializer())
 
 # 开始训练打印日志
 for i in range(20000):

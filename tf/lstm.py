@@ -1,4 +1,4 @@
-# -*- conding:UTF-8 -*-
+# -*- coding:UTF-8 -*-
 import os
 import tensorflow as tf
 from collections import Counter
