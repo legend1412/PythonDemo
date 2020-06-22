@@ -109,3 +109,36 @@ class DeepFM(BaseEstimator, TransformerMixin):
                 # 输入定义的relu激励函数
                 self.y_deep = self.deep_layers_activation(self.y_deep)
                 self.y_deep = tf.nn.dropout(self.y_deep, self.dropout_keep_deep[1 + i])  # dropout at each Deep layer
+
+                # ----------------DeepFM--------------
+                # 判断输出是fm，还是dnn，还是deepfm
+                if self.use_fm and self.use_deep:
+                    concat_input = tf.concat([self.y_first_order, self.y_second_order, self.y_deep], axis=1)
+                elif self.use_fm:
+                    concat_input = tf.concat([self.y_first_order, self.y_second_order], axis=1)
+                elif self.use_deep:
+                    concat_input = self.y_deep
+                # 最后一层将所有节点（fm:y_first_order,y_second_order）和dnn（y_deep）拼成一个向量
+                # 再进行加权求和
+                self.out = tf.add(tf.matmul(concat_input, self.weights['concat_projection']), self.weights['concat_bias'])
+
+                # loss
+                if self.loss_type == 'logloss':
+                    self.out = tf.nn.sigmoid(self.out)
+                    self.loss = tf.losses.log_loss(self.label, self.out)
+                elif self.loss_type == 'mse':
+                    self.loss = tf.nn.l2_loss(tf.subtract(self.label, self.out))
+                # l2 regularization on weigths 是否加入l2正则，基于l2传入变量是否大于0
+                if self.l2_reg > 0:
+                    # fm和deep部分在结果上都增加l2正则
+                    self.loss += tf.contrib.layers.l2_regularizer(self.l2_reg)(self.weights['concat_projection'])
+                    # 不一样的一点是deep需要对不同层的损失增加l2
+                    if self.use_deep:
+                        for i in range(len(self.deep_layers)):
+                            self.loss += tf.contrib.laysers.l2_regularizer(self.l2_reg)(self.weights['layer_%d' % i])
+
+                # optimizer
+                if self.optimizer_type == 'adam':
+                    self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate, betal=0.9, beta2=0.999,
+                                                            epsilon=1e-8).minimize(self.loss)
+
