@@ -146,3 +146,130 @@ class DeepFM(BaseEstimator, TransformerMixin):
                 if self.optimizer_type == 'adam':
                     self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate, beta1=0.9, beta2=0.999,
                                                             epsilon=1e-8).minimize(self.loss)
+                elif self.optimizer_type == 'gd':
+                    self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate).minimize(self.loss)
+                elif self.optimizer_type == 'momentum':
+                    self.optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum=0.5).minimize(self.loss)
+
+                elif self.optimizer_type == 'yellowfin':
+                    self.optimizer = YFOptimizer(learning_rate=self.learning_rate, momentum=0.0).minimize(self.loss)
+
+                # init
+                self.saver = tf.train.Saver()
+                init = tf.global_variables_initializer()
+                self.sess = self.__init_session()
+                self.sess.run(init)
+
+                # number of params shape[2,90,80]=>2*90*80 参数量不一样是因为选用use_fm,use_deep....
+                total_parameters = 0
+                for varibale in self.weights.values():
+                    shape = varibale.get_shape()
+                    variable_parameters = 1
+                    for dim in shape:
+                        variable_parameters *= dim.value
+                    total_parameters += variable_parameters
+                if self.verbose > 0:
+                    print('#params:%d' % total_parameters)
+
+        def _init_session(self):
+            config = tf.ConfigProto(device_count={'gpu': 0})
+            config.gpu_options.allow_growth = True
+            return tf.Session(config=config)
+
+        def _initialize_weights(self):
+            weights = dict()
+            # embeddings
+            weights['feature_embeddings'] = tf.Variable(tf.random_normal([self.feature_size, self.embedding_size], 0.0, 0.01),
+                                                        name='feature_embeddings')  # feature_sizeK
+            weights['feature_bias'] = tf.Variable(
+                tf.random_uniform(([self.feature_size, 1], 0.0, 1.0), name='feature_bias'))  # feature_size*1
+
+            # deep layers
+            num_layer = len(self.deep_layers)
+            # 每以field因为只有1个为1的值，其他都为零，可以采用一个field对应的一个embedding
+            # 注意这层embedding是和FM复用的
+            input_size = self.field_size * self.embedding_size
+            # He 初始化：均值为0，方差为2/n 计算标准差
+            glorot = np.sqrt(2.0 / (input_size + self.deep_layers[0]))
+            # 首先初始化第一层权重w，b，使用he的方式对weight初始化
+            weights['layer_0'] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(input_size, self.deep_layers[0])),
+                                             dtype=np.float32)
+            weights['bias_0'] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(1, self.deep_layers[0])),
+                                            dytpe=np.float32)  # 1*layers[0]
+            for i in range(1, num_layer):
+                # He初始化，计算标准差
+                glorot = np.sqrt(2.0 / (self.deep_layers[i - 1] + self.deep_layers[i]))
+                # 初始化从隐层第一层之后的权重
+                weights['layer_%d' % i] = tf.Variable(
+                    np.random.normal(loc=0, scale=glorot, size=(self.deep_layers[i - 1], self.deep_layers[i])),
+                    dtype=np.float32)  # layers[i-1]*layers[i]
+                weights['bias_%d' % i] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(1, self.deep_layers[i])),
+                                                     dtype=np.float32)  # 1*layer[i]
+
+            # final concat projection layer
+            # 选择模型fm，deep（dnn） 或者deepfm
+            if self.use_fm and self.use_deep:
+                input_size = self.field_size + self.embedding_size + self.deep_layers[-1]
+            elif self.use_fm:
+                input_size = self.field_size + self.embedding_size
+            elif self.use_deep:
+                input_size = self.deep_layers[-1]
+            glorot = np.sqrt(2.0 / (input_size + 1))
+            weights['concat_projection'] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(input_size, 1)),
+                                                       dtype=np.float32)  # layers[i-1]*layers[i]
+            weights['concat_bias'] = tf.Variable(tf.constant(0.01), dtype=np.float32)
+            return weights
+
+        def batch_norm_layer(self, x, train_phase, scope_bn):
+            bn_train = batch_norm(x, decay=self.batch_norm_decay, center=True, scale=True, updates_collections=None,
+                                  is_training=True, reuse=None, trainable=True, scope=scope_bn)
+            bn_inference = batch_norm(x, decay=self.batch_norm_decay, center=True, scale=True, updates_collections=None,
+                                      is_training=False, reuse=True, trainable=True, scope=scope_bn)
+
+            z = tf.cond(train_phase, lambda: bn_train, lambda: bn_inference)
+            return z
+
+    def get_batch(self, Xi, Xv, y, batch_size, index):
+        start = index * batch_size
+        end = (index + 1) * batch_size
+        end = end if end < len(y) else len(y)
+        return Xi[start:end], Xv[start:end], [[y_] for y_ in y[start:end]]
+
+    # shuffle three lists simutaneously
+    def shuffle_in_unison_scary(self,a,b,c):
+        rng_state = np.random.get_state()
+        np.random.shuffle(a)
+        np.random.set_state(rng_state)
+        np.random.shuffle(b)
+        np.random.set_state(rng_state)
+        np.random.shuffle(c)
+
+    def fit_on_batch(self,Xi,Xv,y):
+        feed_dict={
+            self.feat_index:Xi,
+            self.feat_value:Xv,
+            self.label:y,
+            self.dropout_keep_fm:self.dropout_fm,
+            self.dropout_keep_deep:self.dropout_deep,
+            self.train_phase:True
+        }
+        loss,opt = self.sess.run((self.loss,self.optimizer),feed_dict=feed_dict)
+        return loss
+    def fi(self,Xi_train,Xv_train,y_train,Xi_valid=None,Xv_valid=None,y_valid=None,eraly_stopping=False,refit=False):
+        """
+        输入本来是x向量，将x向量拆分成两个，一个是对应x不为0的index数组xi_train，另一个是对应index数组的value值数组xv_train
+        通过这两个向量作为训练的样本向量为输入数据x。valid表示在训练过程中对训练结果的验证，用于评估模型好坏
+        @param Xi_train:[[ind1_1,ind1_2,...],[ind2_1,ind2_2,...],...,[indi_1,indi_2,...,indi_j,...],...]
+                        indj_j is the feature index of feature field j of sample i in the training set
+        @param Xv_train:[[val1_1,val1_2,...],[val2_1,val2_2,...],...,[vali_1,vali_2,...,vali_j,...],...]
+                        vali_j is the feature value of feature field j of sample i in the training set
+                        vali_j can be either binary (1/0,for binary/categorical features) or float (e.g.,10.24,for numerical features)
+        @param y_train: labelof each sample in the training set
+        @param Xi_valid:list of list of feature indices of each sample in the validation set
+        @param Xv_valid:list of list of feature values of each sample in the validation set
+        @param y_valid: label of each sample in the validation set
+        @param eraly_stopping:
+        @param refit:
+        @return:
+        """
+
