@@ -88,18 +88,18 @@ accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
 sess.run(tf.compat.v1.global_variables_initializer())
 
 # 开始训练打印日志
-total = 0
+total = 2000
 good = 0
-for i in range(2000):
+for i in range(total):
     batch = mnist.train.next_batch(50)
-    total += batch[0].shape[0]
-    if i % 1000 == 0:
-        # 预测过程需要所有节点都起到作用，所以keep_prob:1.0
-        train_accuracy = accuracy.eval(session=sess, feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
-        good += train_accuracy
+    # total += batch[0].shape[0]
+    # 预测过程需要所有节点都起到作用，所以keep_prob:1.0
+    train_accuracy = accuracy.eval(session=sess, feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
+    good += train_accuracy
+    if i % 100 == 0:
         print('step:%d,training accuracy %g' % (i, train_accuracy))
     # 训练过程需要将部分节点dropout，所以要给定一个概率0.5 early_stop
     train_step.run(session=sess, feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
     # print('Test accuracy %g' % accuracy.eval(session=sess,
     #                                          feed_dict={x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0}))
-print('Good: %g,Total: %g,Test accuracy:%g' % (good, total, (good / total)))
+print('Good: %g,Test accuracy:%g' % (good, (good / total)))

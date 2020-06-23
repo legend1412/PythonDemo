@@ -147,12 +147,14 @@ class DeepFM(BaseEstimator, TransformerMixin):
                     self.optimizer = tf.train.AdamOptimizer(learning_rate=self.learning_rate, beta1=0.9, beta2=0.999,
                                                             epsilon=1e-8).minimize(self.loss)
                 elif self.optimizer_type == 'gd':
-                    self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate).minimize(self.loss)
+                    self.optimizer = tf.train.GradientDescentOptimizer(learning_rate=self.learning_rate).minimize(
+                        self.loss)
                 elif self.optimizer_type == 'momentum':
-                    self.optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate, momentum=0.5).minimize(self.loss)
+                    self.optimizer = tf.train.MomentumOptimizer(learning_rate=self.learning_rate,
+                                                                momentum=0.5).minimize(self.loss)
 
-                elif self.optimizer_type == 'yellowfin':
-                    self.optimizer = YFOptimizer(learning_rate=self.learning_rate, momentum=0.0).minimize(self.loss)
+                # elif self.optimizer_type == 'yellowfin':
+                #     self.optimizer = YFOptimizer(learning_rate=self.learning_rate, momentum=0.0).minimize(self.loss)
 
                 # init
                 self.saver = tf.train.Saver()
@@ -179,8 +181,9 @@ class DeepFM(BaseEstimator, TransformerMixin):
         def _initialize_weights(self):
             weights = dict()
             # embeddings
-            weights['feature_embeddings'] = tf.Variable(tf.random_normal([self.feature_size, self.embedding_size], 0.0, 0.01),
-                                                        name='feature_embeddings')  # feature_sizeK
+            weights['feature_embeddings'] = tf.Variable(
+                tf.random_normal([self.feature_size, self.embedding_size], 0.0, 0.01),
+                name='feature_embeddings')  # feature_sizeK
             weights['feature_bias'] = tf.Variable(
                 tf.random_uniform(([self.feature_size, 1], 0.0, 1.0), name='feature_bias'))  # feature_size*1
 
@@ -192,8 +195,9 @@ class DeepFM(BaseEstimator, TransformerMixin):
             # He 初始化：均值为0，方差为2/n 计算标准差
             glorot = np.sqrt(2.0 / (input_size + self.deep_layers[0]))
             # 首先初始化第一层权重w，b，使用he的方式对weight初始化
-            weights['layer_0'] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(input_size, self.deep_layers[0])),
-                                             dtype=np.float32)
+            weights['layer_0'] = tf.Variable(
+                np.random.normal(loc=0, scale=glorot, size=(input_size, self.deep_layers[0])),
+                dtype=np.float32)
             weights['bias_0'] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(1, self.deep_layers[0])),
                                             dytpe=np.float32)  # 1*layers[0]
             for i in range(1, num_layer):
@@ -203,8 +207,9 @@ class DeepFM(BaseEstimator, TransformerMixin):
                 weights['layer_%d' % i] = tf.Variable(
                     np.random.normal(loc=0, scale=glorot, size=(self.deep_layers[i - 1], self.deep_layers[i])),
                     dtype=np.float32)  # layers[i-1]*layers[i]
-                weights['bias_%d' % i] = tf.Variable(np.random.normal(loc=0, scale=glorot, size=(1, self.deep_layers[i])),
-                                                     dtype=np.float32)  # 1*layer[i]
+                weights['bias_%d' % i] = tf.Variable(
+                    np.random.normal(loc=0, scale=glorot, size=(1, self.deep_layers[i])),
+                    dtype=np.float32)  # 1*layer[i]
 
             # final concat projection layer
             # 选择模型fm，deep（dnn） 或者deepfm
@@ -236,7 +241,7 @@ class DeepFM(BaseEstimator, TransformerMixin):
         return Xi[start:end], Xv[start:end], [[y_] for y_ in y[start:end]]
 
     # shuffle three lists simutaneously
-    def shuffle_in_unison_scary(self,a,b,c):
+    def shuffle_in_unison_scary(self, a, b, c):
         rng_state = np.random.get_state()
         np.random.shuffle(a)
         np.random.set_state(rng_state)
@@ -244,18 +249,20 @@ class DeepFM(BaseEstimator, TransformerMixin):
         np.random.set_state(rng_state)
         np.random.shuffle(c)
 
-    def fit_on_batch(self,Xi,Xv,y):
-        feed_dict={
-            self.feat_index:Xi,
-            self.feat_value:Xv,
-            self.label:y,
-            self.dropout_keep_fm:self.dropout_fm,
-            self.dropout_keep_deep:self.dropout_deep,
-            self.train_phase:True
+    def fit_on_batch(self, Xi, Xv, y):
+        feed_dict = {
+            self.feat_index: Xi,
+            self.feat_value: Xv,
+            self.label: y,
+            self.dropout_keep_fm: self.dropout_fm,
+            self.dropout_keep_deep: self.dropout_deep,
+            self.train_phase: True
         }
-        loss,opt = self.sess.run((self.loss,self.optimizer),feed_dict=feed_dict)
+        loss, opt = self.sess.run((self.loss, self.optimizer), feed_dict=feed_dict)
         return loss
-    def fi(self,Xi_train,Xv_train,y_train,Xi_valid=None,Xv_valid=None,y_valid=None,eraly_stopping=False,refit=False):
+
+    def fi(self, Xi_train, Xv_train, y_train, Xi_valid=None, Xv_valid=None, y_valid=None, eraly_stopping=False,
+           refit=False):
         """
         输入本来是x向量，将x向量拆分成两个，一个是对应x不为0的index数组xi_train，另一个是对应index数组的value值数组xv_train
         通过这两个向量作为训练的样本向量为输入数据x。valid表示在训练过程中对训练结果的验证，用于评估模型好坏
@@ -268,8 +275,122 @@ class DeepFM(BaseEstimator, TransformerMixin):
         @param Xi_valid:list of list of feature indices of each sample in the validation set
         @param Xv_valid:list of list of feature values of each sample in the validation set
         @param y_valid: label of each sample in the validation set
-        @param eraly_stopping:
-        @param refit:
-        @return:
+        @param eraly_stopping:perform early stopping or not 是否进行提前停止，当训练损失不再变小的最好一次3000，在3000次之内loss还没有变小就停止
+        @param refit:refit the model on the train+valid dataset or not
+        @return:None
         """
+        has_valid = Xv_valid is not None
+        for epoch in range(self.epoch):  # epoch相当于数据迭次几次
+            t1 = time()
+            # 对输入样本带标签的进行三个2个矩阵1个向量进行shuffle
+            self.shuffle_in_unison_scary(Xi_train, Xv_train, y_train)
+            # 每次迭代的总共有多少个batch，相当于每个epoch中循环多少个batch
+            total_batch = int(len(y_train) / self.batch_size)
+            for i in range(total_batch):
+                Xi_batch, Xv_batch, y_batch = self.get_batch(Xi_train, Xv_train, y_train, self.batch_size, i)
+                self.fit_on_batch(Xi_batch, Xv_batch, y_batch)
 
+            # evaluate training and validation datasets
+            # 对训练集进行评估
+            taing_result = self.evaluate(Xi_train, Xv_train, y_train)
+            self.train_result.append(taing_result)
+            # 判断是否要验证（通过给定验证集进行验证）
+            if has_valid:
+                valid_result = self.evaluate(Xi_valid, Xv_valid, y_valid)
+                self.valid_result.append(valid_result)
+            # 是否打印日志
+            if self.verbose > 0 and epoch % self.verbose == 0:
+                if has_valid:
+                    print('[%d] train-result=%.4f,valid-result=%.4f [%.1f s]' % (
+                        epoch + 1, taing_result, valid_result, time() - t1))
+                else:
+                    print('[%d] train-result=%.4f [%.1f s]' % (epoch + 1, taing_result, time() - t1))
+            if has_valid and eraly_stopping and self.training_termization(self.valid_result):
+                break;
+
+        # fit a few more epoch on train+valid until result reaches the best_train_score
+        # 验证+refit
+        if has_valid and refit:
+            # 从验证中取最好模型
+            # 如果训练score是越大越好，比如准确率，auc，就去max
+            # 否则最小的score 比如logloss
+            if self.greater_is_better:
+                best_valid_score = max(self.valid_result)
+            else:
+                bset_valid_score = min(self.valid_result)
+            # 定位最好的训练结果，所对应的结果中的位置（epoch）
+            best_epoch = self.valid_result.index(best_valid_score)
+            # 等到最好的结果
+            best_train_score = self.train_result[best_epoch]
+            # 将训练集和验证集放到一起进行训练最终的模型
+            # 主要因为分出了一部分数据做validation，所以训练的数据肯定是有减少
+            # 最终模型需要将两部门数据组合在一起
+            Xi_train = Xi_train + Xi_valid
+            Xv_train = Xv_train + Xv_valid
+            y_train = y_train + y_valid
+            # 再训练refit
+            for epoch in range(100):
+                self.shuffle_in_unison_scary(Xi_train, Xv_train, y_train)
+                total_batch = int(len(y_train) / self.batch_size)
+                for i in range(total_batch):
+                    Xi_batch, Xv_batch, y_batch = self.get_batch(Xi_train, Xv_train, y_train, self.batch_size, i)
+                    self.fit_on_batch(Xi_batch, Xv_batch, y_batch)
+                # check 训练loss在不变化，获取变化特别小0.01，停止训练（训练终止判断条件）
+                train_result = self.evaluate(Xi_train, Xv_train, y_train)
+                if abs(train_result - best_train_score) < 0.001 or (
+                        self.greater_is_better and train_result > best_train_score) or (
+                        (not self.greater_is_better) and train_result < best_train_score):
+                    break
+
+    def training_termination(self, valid_result):
+        if len(valid_result) > 5:
+            if self.greater_is_better:
+                if valid_result[-1] < valid_result[-2] and valid_result[-2] < valid_result[-3] and valid_result[-3] < \
+                        valid_result[-4] and valid_result[-4] < valid_result[-5]:
+                    return True
+            else:
+                if valid_result[-1] > valid_result[-2] and valid_result[-2] > valid_result[-3] and valid_result[-3] > \
+                        valid_result[-4] and valid_result[-4] > valid_result[-5]:
+                    return True
+        return False
+
+    def predict(self, Xi, Xv):
+        """
+        :param Xi: list of list of feature indices of each sample in the dataset
+        :param Xv: list of list of feature values of each sample in the dataset
+        :return: predicted probability of each sample
+        """
+        # dummy y
+        dymmy_y = [1] * len(Xi)
+        batch_index = 0
+        Xi_batch, Xv_batch, y_batch = self.get_batch(Xi, Xv, dymmy_y, self.batch_size, batch_index)
+        y_pred = None
+        while len(Xi_batch) > 0:
+            num_batch = len(y_batch)
+            feed_dict = {
+                self.feat_index: Xi_batch, self.feat_value: Xv_batch, self.label: y_batch,
+                self.dropout_keep_fm: [1.0] * len(self.dropout_fm),
+                self.dropout_keep_deep: [1.0] * len(self.dropout_deep),
+                self.train_phase: False
+            }
+            batch_out = self.sess.run(self.out, feed_dict=feed_dict)
+
+            if batch_index == 0:
+                y_pred = np.reshape(batch_out, (num_batch,))
+            else:
+                y_pred = np.concatenate((y_pred, np.reshape(batch_out, (num_batch,))))
+
+            batch_index += 1
+            Xi_batch, Xv_batch, y_batch = self.get_batch(Xi, Xv, dymmy_y, self.batch_size, batch_index)
+
+        return y_pred
+
+    def evaluate(self, Xi, Xv, y):
+        """
+        :param Xi: list of list of feature indices of each sample in the dataset
+        :param Xv: list of list of feature values of each sample in the dataset
+        :param y: label of each sample in the dataset
+        :return: metric of the evaluation
+        """
+        y_pred = self.predict(Xi, Xv)
+        return self.eval_metric(y, y_pred)
