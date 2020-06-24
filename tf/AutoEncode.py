@@ -1,4 +1,4 @@
-# -*- coding:UTF-8 -*-
+# -*- coding: UTF-8 -*-
 import tensorflow as tf
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
@@ -30,8 +30,8 @@ class AutoEncoder(object):
         self.transfer = transfer_function
         self.scale = tf.placeholder(tf.float32)
         self.training_scale = scale
-        netword_weigths = self._initialize_weights()
-        self.weights = netword_weigths
+        network_weigths = self._initialize_weights()
+        self.weights = network_weigths
 
         # model：定义网络结构
         self.x = tf.placeholder(tf.float32, [None, self.n_input])
@@ -82,20 +82,20 @@ class AutoEncoder(object):
         })
 
     # 以hidden层为输入，reconstruction为输出，自编码后半部分
-    def genetate(self, hidden=None):
+    def generate(self, hidden=None):
         if hidden is None:
             hidden = np.random.normal(size=self.weights['b1'])
         return self.sess.run(self.reconstruction, feed_dict={self.hidden: hidden})
 
     # 获取w1
-    def getweigth(self):
+    def getweight(self):
         return self.sess.run(self.weights['w1'])
 
     def getbiases(self):
         return self.sess.run(self.weights['b1'])
 
 
-mnist = input_data.read_data_sets('../data/MNIST', one_hot=True)
+mnist = input_data.read_data_sets('../data/MNIST/', one_hot=True)
 
 
 # 对训练数据和test数据做标准化，调用sklearn中对应的标准化方法，0均值，1方差
@@ -128,7 +128,7 @@ def get_random_block_from_data(data, batch_size1):
 feat = []
 # 开始训练
 for epoch in range(training_epochs):
-    agv_cost = 0
+    avg_cost = 0
     total_batch = int(n_samples / batch_size)  # 1000 10 100个10条
     # loop 循环所有的batch
     for i in range(total_batch):
@@ -136,7 +136,7 @@ for epoch in range(training_epochs):
         batch_xs = get_random_block_from_data(X_train, batch_size)
         # fit training using batch data
         cost = auto_encoder.partial_fit(batch_xs)
-        agv_cost += cost * batch_size / n_samples
+        avg_cost += cost * batch_size / n_samples
 
         if epoch == training_epochs - 1:
             hidden_feat = auto_encoder.transform(batch_xs)
@@ -144,7 +144,7 @@ for epoch in range(training_epochs):
 
     if epoch % 1 == 0:
         print()
-        print('Epoch:%04d' % (epoch + 1), 'training_cost={:.9f}'.format(agv_cost))
+        print('Epoch:%04d' % (epoch + 1), 'training_cost={:.9f}'.format(avg_cost))
 
 print('Total test cost:' + str(auto_encoder.calc_total_cost(X_test)))
 print(np.array(feat[0]).shape)

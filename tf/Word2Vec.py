@@ -88,7 +88,7 @@ def generate_batch(batch_size, num_skips, skip_window):
     assert batch_size % num_skips == 0  # 4 bathc_size=17 4个目标单词生成16条数据
     assert num_skips <= 2 * skip_window
     batch = np.ndarray(shape=(batch_size), dtype=np.int32)
-    lables = np.ndarray(shape=(batch_size, 1), dtype=np.int32)
+    labels = np.ndarray(shape=(batch_size, 1), dtype=np.int32)
     span = 2 * skip_window + 1  # [skip_window target skip_window]
     # 创建一个最大容量为span的deque，即双向队列
     buffer = collections.deque(maxlen=span)
@@ -112,7 +112,7 @@ def generate_batch(batch_size, num_skips, skip_window):
             # 目标是语境word，当前的target和buffer中skip_window取到的不同
         buffer.append(data[data_index])
         data_index = (data_index + 1) % len(data)
-    return batch, lables
+    return batch, labels
 
 
 batch, labels = generate_batch(batch_size=9, num_skips=3, skip_window=2)
