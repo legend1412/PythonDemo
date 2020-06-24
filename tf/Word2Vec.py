@@ -18,7 +18,8 @@ def maybe_download(filename):
     return filename
 
 
-filename = maybe_download('text8.zip')
+# filename = maybe_download('text8.zip')
+filename = '../data/text8.zip'
 
 
 # 读取数据到list
@@ -64,6 +65,8 @@ def build_dataset(words):
 
 
 data, count, dictionary, reverse_dictionary = build_dataset(words)
+print(dictionary)
+
 # 为了节省空间
 del words
 print('Most common words(+UNK)', count[:5])
@@ -76,7 +79,6 @@ data_index = 0
 
 def generate_batch(batch_size, num_skips, skip_window):
     """
-
     :param batch_size:batch大小
     :param num_skips: 对每个单词生成多少个样本
     :param skip_window: 单词最远可联系的距离
@@ -87,7 +89,7 @@ def generate_batch(batch_size, num_skips, skip_window):
     global data_index
     assert batch_size % num_skips == 0  # 4 bathc_size=17 4个目标单词生成16条数据
     assert num_skips <= 2 * skip_window
-    batch = np.ndarray(shape=(batch_size), dtype=np.int32)
+    batch = np.ndarray(shape=batch_size, dtype=np.int32)
     labels = np.ndarray(shape=(batch_size, 1), dtype=np.int32)
     span = 2 * skip_window + 1  # [skip_window target skip_window]
     # 创建一个最大容量为span的deque，即双向队列
@@ -110,6 +112,7 @@ def generate_batch(batch_size, num_skips, skip_window):
             # 其中一条样本的feature是target
             batch[i * num_skips + j] = buffer[skip_window]
             # 目标是语境word，当前的target和buffer中skip_window取到的不同
+            labels[i * num_skips + j, 0] = buffer[target]
         buffer.append(data[data_index])
         data_index = (data_index + 1) % len(data)
     return batch, labels
@@ -205,7 +208,7 @@ with tf.Session(graph=graph, config=tf.ConfigProto(allow_soft_placement=True,
                 valid_word = reverse_dictionary[valid_examples[i]]
                 top_k = 8
                 # 取到相似度的top8个单词的index
-                nearest = (-sim[i, :].argsort()[1:top_k + 1])
+                nearest = (-sim[i, :]).argsort()[1:top_k + 1]
                 log_str = 'Nearest to %s:' % valid_word
                 # 通过相似单词的index从字典中取到对应的词
                 for k in range(top_k):
