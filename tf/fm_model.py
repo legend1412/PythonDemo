@@ -18,7 +18,7 @@ class FM(object):
         self.reg_l1 = config['reg_l1']
         self.reg_l2 = config['reg_l2']
         # num of features
-        self.p = config['featrue_length']
+        self.p = config['feature_length']
 
     def add_placeholders(self):
         self.X = tf.sparse_placeholder('float32', [None, self.p])
@@ -60,7 +60,7 @@ class FM(object):
         tf.summary.scalar('accuracy', self.accuracy)
 
     def train(self):
-        # Applies exponential decay to leanring rate
+        # Applies exponential decay to learning rate
         self.global_step = tf.Variable(0, trainable=False)
         # define optimizer
         optimizer = tf.train.FtrlOptimizer(self.lr, l1_regularization_strength=self.reg_l1, l2_regularization_strength=self.reg_l2)

@@ -13,7 +13,7 @@ def read_word(filename):
         return f.read().replace('\n', '<eos>'.split())
 
 
-# 建立词典对，单词进行数字编码，对应数字可以理解单词在词典中的位置
+# 建立词典对，单词进行数字编码，对应数字可以理解单词在词表中的位置
 def build_vocab(filename):
     data = read_word(filename)
 
@@ -65,7 +65,7 @@ class InputData(object):
     The input data 模型处理数据输入数据
     """
 
-    def __int__(self, config, data, name=None):
+    def __init__(self, config, data, name=None):
         self.batch_size = batch_size = config.batch_size
         # LSTM展开步数
         self.num_steps = num_steps = config.num_steps

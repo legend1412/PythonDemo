@@ -30,8 +30,8 @@ class AutoEncoder(object):
         self.transfer = transfer_function
         self.scale = tf.placeholder(tf.float32)
         self.training_scale = scale
-        network_weigths = self._initialize_weights()
-        self.weights = network_weigths
+        network_weights = self._initialize_weights()
+        self.weights = network_weights
 
         # model：定义网络结构
         self.x = tf.placeholder(tf.float32, [None, self.n_input])
