@@ -43,7 +43,8 @@ def _load_data():
 
 
 def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
-    fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS, ignore_cols=config.IGNORE_COLS)
+    fd = FeatureDictionary(dfTrain=dfTrain, dfTest=dfTest, numeric_cols=config.NUMERIC_COLS,
+                           ignore_cols=config.IGNORE_COLS)
     data_parser = DataParser(feat_dict=fd)
     Xi_train, Xv_train, y_train = data_parser.parse(df=dfTrain, has_label=True)
     Xi_test, Xv_test, ids_test = data_parser.parse(df=dfTest)
@@ -88,7 +89,8 @@ def _run_base_model_dfm(dfTrain, dfTest, folds, dfm_params):
 
 
 def _make_submission(ids, y_pred, filename='submission.csv'):
-    pd.DataFrame({'id': ids, 'target': y_pred.flatten()}).to_csv(os.path.join(config.SUB_DIR, filename), index=False, float_format='%.5f')
+    pd.DataFrame({'id': ids, 'target': y_pred.flatten()}).to_csv(os.path.join(config.SUB_DIR, filename), index=False,
+                                                                 float_format='%.5f')
 
 
 def _plot_fig(train_results, valid_results, model_name):

@@ -1,6 +1,8 @@
 from svm.svmMLiA import *
 from numpy import *
 import numpy as np
+from sklearn.datasets import load_breast_cancer
+import matplotlib.pyplot as plt
 
 data_mat, label_mat = load_data_set('testSet.txt')
 print(label_mat)
@@ -36,3 +38,11 @@ b, alphas = smo_simple(data_mat, label_mat, C=0.6, toler=0.001, max_iter=40)
 print('b:', b)
 print('alphas:', alphas)
 print('alphas[alphas>0]:', alphas[alphas > 0])
+
+
+data = load_breast_cancer()
+x = data.data
+print(x.shape)
+y = data.target
+plt.scatter(x[:,0],x[:,1],c=y)
+plt.show()
