@@ -13,7 +13,7 @@ x = data.data
 y = data.target
 print(x.shape)
 print(np.unique(y))
-plt.scatter(x[:, 0], x[, :1], c=y)
+plt.scatter(x[:, 0], x[:, 1], c=y)
 plt.show()
 
 X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=2019)
@@ -23,7 +23,7 @@ for kernel in kernels:
     clf = SVC(kernel=kernel, gamma='auto', degree=1, cache_size=5000)
     clf.fit(X_train, y_train)
     print('The accuracy under kernel %s is %f' % (kernel, clf.score(X_test, y_test)))
-    print(datetime.datetime.fromtimestamp(time() - time0).strftime('%M:%S:%F'))
+    print(datetime.datetime.utcfromtimestamp(time() - time0).strftime('%M:%S:%f'))
 
 # 探索下数据（数据量纲不统一，数据分布式偏态的）
 data = pd.DataFrame(x)
@@ -33,13 +33,13 @@ x = StandardScaler().fit_transform(x)
 data = pd.DataFrame(x)
 print(data.describe([0.01, 0.05, 0.1, 0.25, 0.5, 0.78, 0.9, 0.99]).T)
 
-X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.3, random_state=2019)
+X_train, X_test, y_train, y_test = train_test_split(data, y, test_size=0.3, random_state=20)
 for kernel in kernels:
     time0 = time()
-    clf = SVC(kernel=kernel, gamma='autp', degree=1, cache_size=5000)
+    clf = SVC(kernel=kernel, gamma='auto', degree=1, cache_size=5000)
     clf.fit(X_train, y_train)
     print('The accuracy under kernel %s is %f' % (kernel, clf.score(X_test, y_test)))
-    print(datetime.datetime.fromtimestamp(time() - time0).strftime('%M:%S:%F'))
+    print(datetime.datetime.utcfromtimestamp(time() - time0).strftime('%M:%S:%f'))
 
 # 简单gamma调参
 score = []
