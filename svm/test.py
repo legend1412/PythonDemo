@@ -39,10 +39,9 @@ print('b:', b)
 print('alphas:', alphas)
 print('alphas[alphas>0]:', alphas[alphas > 0])
 
-
 data = load_breast_cancer()
 x = data.data
 print(x.shape)
 y = data.target
-plt.scatter(x[:,0],x[:,1],c=y)
+plt.scatter(x[:, 0], x[:, 1], c=y)
 plt.show()
